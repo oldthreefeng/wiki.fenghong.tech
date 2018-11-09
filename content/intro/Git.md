@@ -8,7 +8,7 @@ Git的`help`信息非常好，很多可以直接help来了解
 
 ## 给Git输出信息增加颜色
 
-编辑`/etc/gitconfig`
+编辑`~/.gitconfig`
 比如要对`git status`设置颜色，可以:
 
 ```

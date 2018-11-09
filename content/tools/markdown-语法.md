@@ -2,6 +2,9 @@
 title: "Markdown 语法"
 date: 2018-11-08 16:18
 ---
+
+[TOC]
+
 Markdown 是一种轻量级的标记语言，其用简单的标记语法便可达到排版的目的，其可以使我们更加专注于内容的编写，而不需过多关注排版。本文主要整理了 Markdown 中的常用的标记语法，以便自己与他人以后查用。
 
 Hexo是基于Github的博客平台，Github中的文本格式是.md，那么用Hexo写博客也必然要用到Markdown。本文首先带你选择适合你的Markdown编辑器(推荐Atom)，然后对Markdown语法做一简要介绍。

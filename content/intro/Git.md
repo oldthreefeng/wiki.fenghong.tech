@@ -1,7 +1,7 @@
 ---
 title: "Git"
 date: 2018-11-08 16:18
-collection:  simiki
+collection:  Simiki
 ---
 
 Git的`help`信息非常好，很多可以直接help来了解

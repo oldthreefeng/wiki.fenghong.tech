@@ -2,6 +2,7 @@
 title: "Git"
 date: 2018-11-08 16:18
 collection:  Simiki
+tag: git
 ---
 
 [TOC]
@@ -1195,6 +1196,3 @@ $ USERNAME=tankywoo PASSWORD=*** git pull
 - [ProGit中文版](http://git-scm.com/book/zh)
 - [Git Reference](http://gitref.org/)
 
-Related:
-
-- [Version Control with Git](https://wiki.tankywoo.com/tool/version-control-with-git.html)

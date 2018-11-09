@@ -7,3 +7,10 @@ keywords:
 description: 
 author: "louis"
 theme: yasimple_x2
+
+#markdown Parser#
+markdown:
+  - fenced_code
+  - extra
+  - codehilite(css_class=hlcode, linenums=False)
+  - toc(title=Table of Contents)

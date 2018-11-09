@@ -4,6 +4,8 @@ date: 2018-11-08 16:18
 collection:  Simiki
 ---
 
+[TOC]
+
 Git的`help`信息非常好，很多可以直接help来了解
 
 ## 给Git输出信息增加颜色

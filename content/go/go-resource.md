@@ -39,7 +39,6 @@ tag: go
 ### json 处理
 
 - [Go 处理 JSON](http://n.thepana.com/2015/10/21/go-json/)
-- [astaxie/build-web-application-with-golang](https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/07.2.md)
 - [golang - 解析复杂json](https://segmentfault.com/q/1010000000583211)
 - [golang解析创建复杂嵌套的json数据](http://xiaorui.cc/2016/03/06/golang%E8%A7%A3%E6%9E%90%E5%88%9B%E5%BB%BA%E5%A4%8D%E6%9D%82%E5%B5%8C%E5%A5%97%E7%9A%84json%E6%95%B0%E6%8D%AE/)
 

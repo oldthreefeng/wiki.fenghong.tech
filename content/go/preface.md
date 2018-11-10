@@ -1,7 +1,7 @@
 ---
 title: "前言"
 date: 2018-11-10 15:40
-collection: go
+collection: "the way to go"
 ---
 
 # 前言

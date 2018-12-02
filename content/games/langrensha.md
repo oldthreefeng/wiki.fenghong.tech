@@ -38,32 +38,29 @@ date: 2018-12-02 22:22
 
 - 平民
 本身没有任何能力，一觉睡到天亮却要考虑很多事情。平民会接收到真假混杂的信息，需要从中分辨和判断出正确的信息。
-https://baike.baidu.com/pic/%E7%8B%BC%E4%BA%BA%E6%9D%80/8035581/0/fc1f4134970a304e1cece691dbc8a786c8175c8a?fr=lemma&ct=single
-
+https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike72%2C5%2C5%2C72%2C24/sign=35c0f41fe1f81a4c323fe49bb6430b3c/fc1f4134970a304e1cece691dbc8a786c8175c8a.jpg
 - 狼人
 每天晚上会残忍地杀害一个村民，到了白天，狼人要假扮村民隐藏自己的身份，故意误导或陷害其他村民。
-https://baike.baidu.com/pic/%E7%8B%BC%E4%BA%BA%E6%9D%80/8035581/0/eaf81a4c510fd9f906df13022f2dd42a2934a495?fr=lemma&ct=single
+https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike72%2C5%2C5%2C72%2C24/sign=05f246a1eccd7b89fd6132d16e4d29c2/eaf81a4c510fd9f906df13022f2dd42a2934a495.jpg
 　　
 
 - 预言家
 每晚预言家可以窥视一个玩家的真实身份，是村庄里的灵魂人物。预言家要思考如何帮助村民的同时又不被狼人发现自己的身份。
-https://baike.baidu.com/pic/%E7%8B%BC%E4%BA%BA%E6%9D%80/8035581/0/d0c8a786c9177f3e58edba667acf3bc79e3d56fb?fr=lemma&ct=single
+https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike72%2C5%2C5%2C72%2C24/sign=e8ce13022f2dd42a4b0409f9625230d0/d0c8a786c9177f3e58edba667acf3bc79e3d56fb.jpg
 
 - 女巫
 女巫拥有两瓶药，解药可以救活一名当晚被狼人杀害的玩家，毒药可以毒杀一名玩家，女巫在每天晚上最多使用一瓶药，女巫不可自救。
-https://baike.baidu.com/pic/%E7%8B%BC%E4%BA%BA%E6%9D%80/8035581/0/2934349b033b5bb5100c66953cd3d539b700bc86?fr=lemma&ct=single
-
+https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike72%2C5%2C5%2C72%2C24/sign=00d5bbcedb43ad4bb2234e92e36b31ca/2934349b033b5bb5100c66953cd3d539b700bc86.jpg
 - 猎人
 当猎人被狼人杀害或被村民处决时，他可以射杀任意一个玩家。但当猎人由于意外死亡（如女巫的毒药或者被殉情而死）他不可在死前射出子弹。
-https://baike.baidu.com/pic/%E7%8B%BC%E4%BA%BA%E6%9D%80/8035581/0/e61190ef76c6a7efc1b6ee4df7faaf51f2de66cc?fr=lemma&ct=single
+https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike72%2C5%2C5%2C72%2C24/sign=61ab6ece007b020818c437b303b099b6/e61190ef76c6a7efc1b6ee4df7faaf51f2de66cc.jpg
 
 - 守卫
 每晚守卫暗中指定一个玩家，该玩家当晚会受到保护，不会被狼人杀害，守卫不能连续两晚守卫同一个人，守卫可以守卫自己。（注：部分局规定若女巫的救人与守卫守护的人为同一人，则判定该位玩家因同守同救而死亡）
-https://baike.baidu.com/pic/%E7%8B%BC%E4%BA%BA%E6%9D%80/8035581/0/a044ad345982b2b7217978af3badcbef77099bf3?fr=lemma&ct=single
-
+https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike72%2C5%2C5%2C72%2C24/sign=7b59cd5a4090f60310bd9415587bd87e/a044ad345982b2b7217978af3badcbef77099bf3.jpg
 - 白痴
 白痴若是被投票出局，可以翻开自己的身份牌，免疫此次放逐，之后可以正常发言，但不能投票，狼人仍需要击杀他一次才能让他死亡。但若是白痴因非投票原因死亡，则无法发动技能，立即死亡。
-https://baike.baidu.com/pic/%E7%8B%BC%E4%BA%BA%E6%9D%80/8035581/0/d6ca7bcb0a46f21f78e91f38fc246b600d33aef8?fr=lemma&ct=single
+https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike72%2C5%2C5%2C72%2C24/sign=1b2425818bcb39dbd5cd6f04b17f6241/d6ca7bcb0a46f21f78e91f38fc246b600d33aef8.jpg
 
 ## 术语
 - 金水

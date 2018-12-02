@@ -38,7 +38,7 @@ date: 2018-12-02 22:22
 
 - 平民
 本身没有任何能力，一觉睡到天亮却要考虑很多事情。平民会接收到真假混杂的信息，需要从中分辨和判断出正确的信息。
-![](../../../images/pingming.jpg?raw=true)
+![](/images/pingming.jpg?raw=true)
 - 狼人
 每天晚上会残忍地杀害一个村民，到了白天，狼人要假扮村民隐藏自己的身份，故意误导或陷害其他村民。
 https://gss1.bdstatic.com/9vo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike72%2C5%2C5%2C72%2C24/sign=05f246a1eccd7b89fd6132d16e4d29c2/eaf81a4c510fd9f906df13022f2dd42a2934a495.jpg

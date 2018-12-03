@@ -167,3 +167,7 @@ date: 2018-12-02 22:22
 撕警徽：警长出局后选择不移交警徽 在放逐公投中放逐警长
 ```
 
+## 参考
+
+- [百度百科](https://baike.baidu.com/item/%E7%8B%BC%E4%BA%BA%E6%9D%80/8035581)
+- [switchmag.co](https://switchmag.co/%e7%8b%bc%e4%ba%ba%e6%9d%80%e5%8f%91%e8%a8%80%e7%b3%bb%e5%88%97%ef%bc%9a%e7%8c%8e%e4%ba%ba%e7%af%87/)

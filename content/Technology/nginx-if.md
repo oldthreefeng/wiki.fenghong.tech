@@ -45,3 +45,6 @@ location = /web/address {
 匹配的内容可以是字符串也可以是一个正则表达式。
 如果一个正则表达式包含"}"或者";"就必须包含在单引号或双引号里面。
 ```
+
+## 参考：
+- [AN SHEN](https://www.lshell.com/2018/01/nginx.html)

@@ -1,8 +1,8 @@
 ---
 title: "nginx if 多重判断语句"
-date： "2018-12-12 10:44:32"
-tag： nginx
-collection： nginx
+date: "2018-12-12 10:44:32"
+tag: nginx
+collection: nginx
 ---
 
 [TOC]

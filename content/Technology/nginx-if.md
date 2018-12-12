@@ -5,6 +5,8 @@ tags： nginx
 collection： nginx
 ---
 
+[TOC]
+
 ## nginx 多重判断
 
 在Nginx 配置文件里面有简单的条件控制，但并不支持if条件的逻辑与／逻辑或运算 ，并且不支持if的嵌套语法，这就需要换一种方法来做了。

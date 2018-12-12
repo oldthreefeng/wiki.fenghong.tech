@@ -1,6 +1,6 @@
 ---
 title: Kubuntu 从安装到科学上网
-date: 2018-07-25 09:59:32
+date: 2018-12-12 09:59:32
 tags: 
 - Linux
 - ubuntu

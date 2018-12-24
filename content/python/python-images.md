@@ -277,11 +277,11 @@ print(c)
 
 - 利用正相关来谈论房价.
 
-`$cov(X,Y) =E[X-E[X]]E[Y-E[Y]]=E[X*Y] - E[X]E[Y]$`
+$$cov(X,Y) =E[X-E[X]]E[Y-E[Y]]=E[X*Y] - E[X]E[Y]$$
 
-因为`$\mu _{X}=E(X)$`,`$\sigma_{X}^{2}=E(X^{2})-E^{2}(X)$`，同样地，对于`$Y$`，可以写成:
+因为$\mu _{X}=E(X)$,$\sigma_{X}^{2}=E(X^{2})-E^{2}(X)$，同样地，对于$Y$，可以写成:
 
-`$\rho _{X,Y}={\frac {E(XY)-E(X)E(Y)}{{\sqrt {E(X^{2})-E^{2}(X)}}~{\sqrt {E(Y^{2})-E^{2}(Y)}}}}$`
+$$\rho _{X,Y}={\frac {E(XY)-E(X)E(Y)}{{\sqrt {E(X^{2})-E^{2}(X)}}~{\sqrt {E(Y^{2})-E^{2}(Y)}}}}$$
 
 ```
 # cov()函数：协方差 
@@ -304,3 +304,4 @@ print(r1)
 
 - [wiki-correlation](https://en.wikipedia.org/wiki/Correlation_and_dependence)
 - [慕课昊天](http://www.icourse163.org/learn/BIT-1001870002?tid=1001963001#/learn/content)
+

@@ -1,5 +1,5 @@
 ---
-title: "Kubuntu 从安装到科学上网"
+title: "Kubuntu from install to use ssr"
 date: "2018-12-12 09:59:32"
 tags: 
 - Linux
@@ -50,6 +50,10 @@ $ echo $PATH
 ```
 
 - 配置文件创建
+
+`server`字段: 为服务的ip地址
+
+`server_port`字段: 为服务器开启的端口一般设置在1024之后，建议为8810。
 
 ```
 $ sudo vim /etc/shadowsocks.json

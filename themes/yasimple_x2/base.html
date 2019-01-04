@@ -25,11 +25,13 @@
         Powered by <a href="http://simiki.org/" target="_blank">Simiki</a>.
         Theme by <a href="https://github.com/tankywoo/yasimple_x2" target="_blank">YASimple_X2</a>.
         </p>
+	<p><a href="https://www.fenghong.tech/" target="_blank">louis|blog</a></p>
         <p>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可。</p>
-      </div> <!-- end footer-left -->
+	</div> <!-- end footer-left -->
       <div class="footer-right">
         <p>站点最后生成 {{ site.time.strftime("%Y-%m-%d %H:%M:%S") }}</p>
         <p><a href="https://github.com/oldthreefeng/wiki.fenghong.tech">Fork me on Github</a></p>
+	<p><a href="http://www.miitbeian.gov.cn/">鄂ICP备18027870号</a></p>
       </div> <!-- end footer-right -->
     </div>
 
@@ -39,6 +41,22 @@
     <script type="text/javascript">
 var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
 document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F754de327571c0ba7ff50a61fc964e196' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+          <!--$表示行内元素，$$表示块状元素 -->
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+          processEscapes: true
+        },
+        "HTML-CSS": { availableFonts: ["TeX"] }
+      });
+    </script>
+    <!--加载MathJax的最新文件， async表示异步加载进来 -->
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js">
     </script>
   </body>
 </html>

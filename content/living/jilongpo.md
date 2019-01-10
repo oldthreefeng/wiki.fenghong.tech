@@ -46,12 +46,13 @@ T77 11:27--04:50  上海南到桂林北
 ```
 - 2.1 桂林---吉隆坡
 ```
+#### 机票时间 ####
 KWL 两江国际机场
 AK0157 空客A320  11:50 -- 15:45  
 KUL吉隆坡国际机场T2
 
 
-酒店名字：
+#### 酒店名字 ####
 The Explorers Guesthouse
 探索者宾馆
 联系方式：
@@ -62,20 +63,27 @@ The Explorers Guesthouse
 - 2.2 吉隆坡--槟城
 
 ```
+#### 订票 ####
 吉隆坡到槟城的火车票(需要提前一个月订购)
 http://www.easybook.com/train/booking/kualalumpur-to-penang
 吉隆坡到北海的火车票(需要提前一个月订购)
 https://www.easybook.com/train/booking/kualalumpur-to-ktmbutterworth
 
+#### tiket for bus  ####
+02 Feb 2019 01:30PM 
+Kuala Lumpur，TBS(Terminal Bersepadu Selatan)
+-----> Penang Sentral(butterwrth)
+tel: +6016-5595882/+60165595771
+
 tips：
 到了北海火车站出站后跟着人群走有免费的巴士载你去码头，乘船到乔治市！
 
-入住时间
+#### 入住时间 ####
 2019年2月3日星期日  14:00至23:00
 退房时间
 2019年2月6日星期三  12:00至12:30
 
-酒店名字：
+#### 酒店名字 ####
 WeLuv Travel Guesthouse
 微心旅游
 联系方式：
@@ -86,15 +94,17 @@ WeLuv Travel Guesthouse
 - 2.6 槟城--兰卡威
 
 ```
+#### 订票 ####
 槟城到兰卡威的船票(只有8:30AM 和2:00PM两次票)
 https://www.busonlineticket.com/booking/penang-ferry-terminal-to-jetty-langkawi-ferry-tickets
+酒店内部有售，暂时可以不买
 
-入住时间
+#### 入住时间 ####
 2019年2月6日星期三   14:00至00:00
 退房时间
 2019年2月9日星期六   07:30至12:00
 
-酒店名字：
+#### 酒店名字 ####
  Senari Bay Resort 
 瑟纳雷海湾度假村
 联系方式：
@@ -106,12 +116,14 @@ tips： 海边的住宿，离机场较近
 - 2.9 兰卡威--吉隆坡
 
 ```
+#### 机票时间 ####
 LGK ---KUL
 08:15AM -- 09:25AM
 
-入住时间   2019年2月9日星期六    从15:00起
+#### 入住时间 ####   
+2019年2月9日星期六    从15:00起
 
-酒店名字：
+#### 酒店名字 ####
 The Explorers Guesthouse
 探索者宾馆
 联系方式：
@@ -122,9 +134,8 @@ The Explorers Guesthouse
 - 2.10 吉隆坡
 
 ```
-只有住宿
 
-酒店名字：
+#### 酒店名字 ####
 Sama Sama Express klia2 (Airside Transit Hotel) 
 (萨玛萨玛KLIA2快捷酒店（航空中转酒店）
 联系方式：
@@ -137,9 +148,12 @@ tips: 22:00-4:00，然后赶飞机
 
 - 2.11
 ```
+#### 机票时间 ####
 AK0156 空客A320  7:15 -- 11:05  
 KUL吉隆坡国际机场T2
 KWL 两江国际机场
+
+#### 火车时间 #### 
 T26 19:41--次日15:07    桂林北到上海南
 
 ```

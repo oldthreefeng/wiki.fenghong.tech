@@ -6,13 +6,13 @@ tag: ops
 
 [TOC]
 
-1. 安装vpn
+### 安装vpn
 
 双击`openvpn-install-2.3.6-I603-x86_64`.进入安装界面直至安装成功。
 记住自己的安装目录。
 ![图片描述](http://pic.fenghong.tech/tapd_23280401_base64_1547807430_68.png)
 
-2. 安装秘钥
+### 安装秘钥
 
 解压`qianxiangc`
 生成两个文件夹`__MACOSX`和`qianxiangc`.
@@ -21,7 +21,7 @@ tag: ops
 进入安装目录，打开`config`文件夹,将解压的两个文件夹复制过来。
 ![图片描述](http://pic.fenghong.tech/tapd_23280401_base64_1547807545_100.png)
 
-3. 启动vpn
+### 启动vpn
 
 ![图片描述](http://pic.fenghong.tech/tapd_23280401_base64_1547807627_27.png)
 

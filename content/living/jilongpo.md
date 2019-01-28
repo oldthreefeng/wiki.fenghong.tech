@@ -51,7 +51,8 @@ K149 8:36--04:50  上海南到桂林北 11车
 KWL 两江国际机场
 AK0157 空客A320  11:50 -- 15:45  
 KUL吉隆坡国际机场T2
-
+从 吉隆坡KUL机场 Jalan Cta3 到  The Explorers Guesthouse
+KLIA Ekspres  ERL station ---->   KL sentral
 
 #### 酒店名字 ####
 The Explorers Guesthouse
@@ -59,6 +60,10 @@ The Explorers Guesthouse
 联系方式：
 128 & 130 Jalan Tun H.S. Lee  Kuala Lumpur, 55100
 +60 3 2022 2928
+
+从The Explorers Guesthouse 到 Bandar Tasik Selatan 有两条线路
+RapidKL  Masjid Jamek -------> Bandar Tasik Selatan  （黄色线）
+KTM    Kuala Lumpur--------> Bandar Tasik Selatan (蓝色线)
 ```
 
 - 2.2 吉隆坡--槟城
@@ -69,6 +74,8 @@ The Explorers Guesthouse
 http://www.easybook.com/train/booking/kualalumpur-to-penang
 吉隆坡到北海的火车票(需要提前一个月订购)
 https://www.easybook.com/train/booking/kualalumpur-to-ktmbutterworth
+
+
 
 #### tiket for bus  ####
 02 Feb 2019 01:30PM 
@@ -106,13 +113,16 @@ https://www.busonlineticket.com/booking/penang-ferry-terminal-to-jetty-langkawi-
 退房时间
 2019年2月9日星期六   07:30至12:00
 
+从 Star Cruise Jetty  到   Senari Bay Resort ;#约莫6.3KM无公交，只能打车~
+
 #### 酒店名字 ####
- Senari Bay Resort 
+Senari Bay Resort 
 瑟纳雷海湾度假村
 联系方式：
 Kuala Cenang, MK. Kedawang  Pantai Cenang, 07000  
 +60 11 2414 2324
 tips： 海边的住宿，离机场较近
+从 Senari Bay Resort  到 Langkawi International Airport   #约莫7.0km
 ```
 
 - 2.9 兰卡威--吉隆坡
@@ -121,6 +131,7 @@ tips： 海边的住宿，离机场较近
 #### 机票时间 ####
 LGK ---KUL
 08:15AM -- 09:25AM
+此次到酒店的路线同2.1
 
 #### 入住时间 ####   
 2019年2月9日星期六    从15:00起

@@ -25,10 +25,12 @@ tag: ops
 
 ![图片描述](http://pic.fenghong.tech/tapd_23280401_base64_1547807627_27.png)
 
-- win10系统
-右键属性，在目标的位置 `"C:\Program Files\OpenVPN\bin\openvpn-gui.exe" `后面加入一个选项`"--connect qianxiang.ovpn`,如图
+#### win10系统
+
+右键属性，在目标的位置 `"C:\Program Files\OpenVPN\bin\openvpn-gui.exe" `后面加入一个选项`--connect qianxiang.ovpn`,如图
 ![图片描述](http://pic.fenghong.tech/tapd_23280401_base64_1547807698_66.png)
-- win7系统
+
+#### win7系统
 
 直接以管理员身份启动vpn即可。
 

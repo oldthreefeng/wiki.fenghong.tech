@@ -22,13 +22,17 @@ collection: Manage Kownledge
 # 一键恢复
 
 重装了一次系统或者重装chrome，发现`Proxy SwitchyOmega`这个软件的配置没有自动保存功能，比较尴尬，只能重新导入，这边只好保存了一下自己的配置文件，安装好`Proxy SwitchyOmega`,选择`import/Export`  ----> `Restore from online`;我这边保存在自己的阿里云上了，路径如下
-服务器安装ssr可以看[flyzy](https://www.flyzy2005.com/fan-qiang/shadowsocks/shadowsocks-config-multiple-users/)
-github地址:`git clone https://github.com/flyzy2005/ss-fly`
+
 ```
 https://www.fenghong.tech/OmegaOptions.bak
 ```
 
 # 科学上网
+
+- 服务器安装
+
+服务器安装ssr可以看[flyzy](https://www.flyzy2005.com/fan-qiang/shadowsocks/shadowsocks-config-multiple-users/)
+github地址:`git clone https://github.com/flyzy2005/ss-fly`
 
 - 安装代理
 

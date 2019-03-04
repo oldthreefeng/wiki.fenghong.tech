@@ -29,6 +29,11 @@ https://www.fenghong.tech/OmegaOptions.bak
 
 # 科学上网
 
+- 服务器安装
+
+服务器安装ssr可以看[flyzy](https://www.flyzy2005.com/fan-qiang/shadowsocks/shadowsocks-config-multiple-users/)
+github地址:`git clone https://github.com/flyzy2005/ss-fly`
+
 - 安装代理
 
 安装`shadowsocks`,这里不要用系统自带的`sudo apt install shadowsocks`,下载的不是最新的，不支持加密选项，会报错，这里博主犯错了，习惯了用`vim`编辑，所以这里我推荐使用。

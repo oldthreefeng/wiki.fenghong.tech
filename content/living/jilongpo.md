@@ -41,17 +41,20 @@ tag: tour
 
 - 1.31 上海---桂林
 ```
-#### 火车 ####
-K149 8:36--04:50  上海南到桂林北 11车
+#### 机票时间 ####
+					上海航空 FM9176
+上海浦东T1  21:10 -------------------- 00:10  桂林两江T2 
+ 
 
 ```
 - 2.1 桂林---吉隆坡
 ```
 #### 机票时间 ####
-KWL 两江国际机场
-AK0157 空客A320  11:50 -- 15:45  
-KUL吉隆坡国际机场T2
+						AK0157 空客A320
+ KWL 两江国际机场 11:50 ------------------- 15:45  KUL吉隆坡国际机场T2
 
+从 吉隆坡KUL机场 Jalan Cta3 到  The Explorers Guesthouse
+KLIA Ekspres  ERL station ---->   KL sentral
 
 #### 酒店名字 ####
 The Explorers Guesthouse
@@ -59,6 +62,10 @@ The Explorers Guesthouse
 联系方式：
 128 & 130 Jalan Tun H.S. Lee  Kuala Lumpur, 55100
 +60 3 2022 2928
+
+从The Explorers Guesthouse 到 Bandar Tasik Selatan 有两条线路
+RapidKL  Masjid Jamek -------> Bandar Tasik Selatan  （黄色线）
+KTM    Kuala Lumpur--------> Bandar Tasik Selatan (蓝色线)
 ```
 
 - 2.2 吉隆坡--槟城
@@ -70,6 +77,8 @@ http://www.easybook.com/train/booking/kualalumpur-to-penang
 吉隆坡到北海的火车票(需要提前一个月订购)
 https://www.easybook.com/train/booking/kualalumpur-to-ktmbutterworth
 
+
+
 #### tiket for bus  ####
 02 Feb 2019 01:30PM 
 Kuala Lumpur，TBS(Terminal Bersepadu Selatan)
@@ -80,7 +89,8 @@ tips：
 到了北海火车站出站后跟着人群走有免费的巴士载你去码头，乘船到乔治市！
 
 #### 入住时间 ####
-2019年2月3日星期日  14:00至23:00
+
+2019年2月2日星期日  14:00至23:00
 退房时间
 2019年2月6日星期三  12:00至12:30
 
@@ -105,21 +115,25 @@ https://www.busonlineticket.com/booking/penang-ferry-terminal-to-jetty-langkawi-
 退房时间
 2019年2月9日星期六   07:30至12:00
 
+从 Star Cruise Jetty  到   Senari Bay Resort ;#约莫6.3KM无公交，只能打车~
+
 #### 酒店名字 ####
- Senari Bay Resort 
+Senari Bay Resort 
 瑟纳雷海湾度假村
 联系方式：
 Kuala Cenang, MK. Kedawang  Pantai Cenang, 07000  
 +60 11 2414 2324
 tips： 海边的住宿，离机场较近
+从 Senari Bay Resort  到 Langkawi International Airport   #约莫7.0km
 ```
 
 - 2.9 兰卡威--吉隆坡
 
 ```
 #### 机票时间 ####
-LGK ---KUL
-08:15AM -- 09:25AM
+             	AK6309
+ LGK 08:15AM ------------ 09:25AM   KUL
+此次到酒店的路线同2.1
 
 #### 入住时间 ####   
 2019年2月9日星期六    从15:00起
@@ -150,18 +164,18 @@ tips: 22:00-04:00，然后赶飞机
 - 2.11
 ```
 #### 机票时间 ####
-AK0156 空客A320  07:15 -- 11:05  
-KUL吉隆坡国际机场T2
-KWL 两江国际机场
+						  AK0156 空客A320 
+KUL吉隆坡国际机场T2  07:15 ----------------- 11:05    KWL 两江国际机场
+
 ```
 
 - 2.12
 
 ```
 #### 机票时间 ####
-上海航空FM9858
-桂林两江T2     06：10 -- 08：25
-上海浦东T1
+					  上海航空FM9858
+桂林两江T2     06：10 ---------------- 08：25  上海浦东T1
+
 ```
 
 

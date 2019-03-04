@@ -135,7 +135,7 @@ $ mkdir -p /etc/openvpn/pki
 生成tls-auth key并将其拷贝到证书目录中：
 
 ```
-$ /us/local/openvpn/sbin/openvpn --genkey --secret ta.key
+$ /usr/local/openvpn/sbin/openvpn --genkey --secret ta.key
 $ mv ta.key /etc/openvpn/pki
 ```
 

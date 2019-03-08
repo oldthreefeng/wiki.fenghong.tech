@@ -193,9 +193,9 @@ tcp        0      0 127.0.0.1:9001     0.0.0.0:*   LISTEN      27057/java
 ### 兼容性
 
 ```
-来自maven-sonar-plugin 3.4.0.905，不再支持SonarQube <5.6。
+maven-sonar-plugin 3.4.0.905之前版本，不再支持SonarQube <5.6。
 如果使用5.6之前的SonarQube实例，则应使用maven-sonar-plugin 3.3.0.603。
-从maven-sonar-plugin 3.1开始，不再支持Maven <3.0。
+maven-sonar-plugin 3.1之前版本，不再支持Maven <3.0。
 如果在3.0之前使用Maven，则应使用maven-sonar-plugin 3.0.2。
 ```
 

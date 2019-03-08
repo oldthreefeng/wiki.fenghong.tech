@@ -38,7 +38,7 @@ ulimit -n 65536
 ulimit -u 2048
 ```
 
-seccomp
+### seccomp
 
 您可以使用以下命令检查内核上是否有seccomp：
 
@@ -62,7 +62,7 @@ $ grep SECCOMP /boot/config-$(uname -r)
 sonar.search.javaAdditionalOpts=-Dbootstrap.system_call_filter=false
 ```
 
-系统配置：
+### 安装系统配置
 
 ```
 CPU model            : Intel(R) Xeon(R) CPU E5-26xx v4  @ 2.50GHz
@@ -183,7 +183,7 @@ tcp        0      0 127.0.0.1:9001     0.0.0.0:*   LISTEN      27057/java
 
 #### 汉化
 
-分析结果出来了但还是有点懵？不知道具体含义？
+登录之后全是英文，可以选择汉化
 安装汉化包试试：页面上找到`Administration > Marketplace`，在搜索框中输入`chinese`，出现一个`Chinese Pack`，点击右侧的`install`按钮。
 安装成功后，会提示重启 SonarQube 服务器。
 稍等一会，再看页面上已经显示中文了。

@@ -151,7 +151,7 @@ sonar.scm.disabled=true
 # Description: SonarQube system (www.sonarsource.org)
 ### END INIT INFO
  
-/usr/bin/sonar $*
+su sonar -lc "/usr/local/sonarqube/bin/linux-x86-64/sonar.sh $*"
 ```
 
 注册服务cents6.5：

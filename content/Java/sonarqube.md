@@ -257,6 +257,7 @@ $ mv sonar-scanner-3.3.0.1492-linux/ /usr/local/sonar-scanner
 $ vim /etc/profile
 export SONAR_SACNNER=/usr/local/sonar-scanner
 export PATH=$SONAR_SACNNER/bin:$PATH
+$ . /etc/profile
 ```
 
 配置`sonar-project.properties`
@@ -285,6 +286,12 @@ Options:
  -h,--help             Display help information
  -v,--version          Display version information
  -X,--debug            Produce execution debug output
+ $ sonar-scanner -v
+INFO: Scanner configuration file: /usr/local/sonar-scanner/conf/sonar-scanner.properties
+INFO: Project root configuration file: NONE
+INFO: SonarQube Scanner 3.3.0.1492
+INFO: Java 1.8.0_121 Oracle Corporation (64-bit)
+INFO: Linux 3.10.0-862.2.3.el7.x86_64 amd64
 ```
 
 

@@ -159,7 +159,7 @@ mysqldump: Couldnt execute show create table `sk_order_38`: Unable to open under
 ERROR! The server quit without updating PID file (/udisk/mysql/mysql/qx_sit.pid).
 
 报错原因： 权限错误
-解决措施： 
+解决措施： mysql的datadir权限更新为mysql
 
 
 # chown -R mysql.mysql /data/mysql/
@@ -169,6 +169,8 @@ ERROR! The server quit without updating PID file (/udisk/mysql/mysql/qx_sit.pid)
 ```
 mysql> SELECT 1;
 ERROR 1820 (HY000): You must SET PASSWORD before executing this statement
+
+# 更改密码即可
 
 mysql> SET PASSWORD = PASSWORD('new_password');
 Query OK, 0 rows affected (0.01 sec)

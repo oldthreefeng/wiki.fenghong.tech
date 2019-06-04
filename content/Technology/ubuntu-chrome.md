@@ -33,6 +33,60 @@ https://www.fenghong.tech/OmegaOptions.bak
 
 服务器安装ssr可以看[flyzy](https://www.flyzy2005.com/fan-qiang/shadowsocks/shadowsocks-config-multiple-users/)
 github地址:`git clone https://github.com/flyzy2005/ss-fly`
+一键执行命令：`./ss-fly/ss-fly.sh -i foobar 5381`    
+`-i 指定密码； 5381 端口`
+
+- 单用户账户
+
+```
+{
+    "server":"0.0.0.0",  
+    "server_port":5381,
+    "local_address":"127.0.0.1",
+    "local_port":1080,
+    "password":"foobar1",
+    "timeout":300,
+    "method":"aes-256-cfb",
+    "fast_open":false
+}
+```
+
+
+
+
+- 多用户配置文件
+
+```
+{
+        "server":"0.0.0.0",
+        "local_address": "127.0.0.1",
+        "local_port":1080,
+        "port_password": {
+            "5381": "foobar",
+            "5382": "foobar1",
+            "5383": "foobar2",
+            "5384": "foobar3"
+        },
+        "timeout":300,
+        "method":"aes-256-cfb",
+        "fast_open": false
+}
+
+```
+
+表格说明
+
+| Name          | 说明                                                         |
+| ------------- | ------------------------------------------------------------ |
+| server        | 服务器地址，填ip或域名                                       |
+| local_address | 本地地址                                                     |
+| local_port    | 本地端口，一般1080，可任意                                   |
+| server_port   | 服务器对外开的端口                                           |
+| password      | 密码，可以每个服务器端口设置不同密码                         |
+| port_password | server_port + password ，服务器端口加密码的组合              |
+| timeout       | 超时重连                                                     |
+| method        | 默认: “aes-256-cfb”，见 [Encryption](https://github.com/shadowsocks/shadowsocks/wiki/Encryption) |
+| fast_open     | 开启或关闭 [TCP_FASTOPEN](https://github.com/shadowsocks/shadowsocks/wiki/TCP-Fast-Open), 填true / false，需要服务端支持 |
 
 - 安装代理
 

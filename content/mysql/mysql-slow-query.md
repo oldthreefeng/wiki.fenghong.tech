@@ -1,6 +1,9 @@
 ---
 title: "mysql slow query"
 date: 2018-12-11 17:05
+tag: 
+  - mysql
+  - SlowQuery
 ---
 
 [TOC]

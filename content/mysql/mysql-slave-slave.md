@@ -98,9 +98,9 @@ $ head -n25 full-20190717_113628.sql
 $ mysql -S /data/mysqlslave/mysql/mysql.sock < full-20190717_113628.sql
 $ mysql -S /data/mysqlslave/mysql/mysql.sock
 mysql> CHANGE MASTER TO
-  		MASTER_HOST='10.9.94.184',
-  		MASTER_USER='bak',
-  		MASTER_PASSWORD='Qianxiang709+,',
+  		MASTER_HOST='master.host',
+  		MASTER_USER='replication',
+  		MASTER_PASSWORD='bigs3cret',
   		MASTER_PORT=3306,
   		MASTER_LOG_FILE='mysql-bin.000024',
   		MASTER_LOG_POS=129201560,

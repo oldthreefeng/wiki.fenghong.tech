@@ -116,7 +116,7 @@ func IsPrime(n int64) bool {
 func found() {
 	start := time.Now().UnixNano()
 	var i int64
-	for i = 2; i <= 2000000; i++ {
+	for i = 2; i <= 20000000; i++ {
 		if IsPrime(i) {
 			//fmt.Println(i)
 		}
@@ -127,7 +127,7 @@ func found() {
 func main() {
 	found()
 }
-// 普通的for循环耗时=128782985100  纳秒
+
 
 ```
 
@@ -217,7 +217,7 @@ func main() {
 //使用协程耗时 = 44439510400
 ```
 
-计算一个1-2000000内的素数,速度提升了2倍.
+计算一个1-20000000内的素数,速度提升了2倍.
 
 想要了解更多的channel,可以看看mooc老师的`logProcess`的那个教学视频[mooc](https://www.imooc.com/learn/982),很不错,利用golang将的高并发特效,这个是跟着老师码下来的源码[点击看源码](https://gogs.wangke.co/go/demoLogprocess/src/master/log_process.go)
 

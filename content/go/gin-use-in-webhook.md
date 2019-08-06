@@ -1,5 +1,5 @@
 ---
-title: "gin搭建webServer自动部署github项目"
+title: "gin实现webhook"
 date: 2019-05-09 15:56
 tag: 
   - go
@@ -202,5 +202,26 @@ Options:
   -sh string
     	deploy shell scritpt (default "/app/wiki.sh")
 ```
+
+### 验证
+
+部署在服务器上,然后再github上添加webhook~部署成功
+
+````
+./deploy 
+[GIN-debug] [WARNING] Now Gin requires Go 1.6 or later and Go 1.7 will be required soon.
+
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /                         --> main.defaultPage (3 handlers)
+[GIN-debug] POST   /deploy/wiki              --> main.gitPush (3 handlers)
+[GIN-debug] Listening and serving HTTP on :8000
+sha1=9cae3a92dba9c2221bdbdb0910007d8b191f5363
+Signatures is matched ~
+````
 
 练手的go项目,学习`golang`第15天~

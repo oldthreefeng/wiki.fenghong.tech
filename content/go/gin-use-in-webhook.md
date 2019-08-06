@@ -79,8 +79,8 @@ func gitPush(c *gin.Context) {
 		return
 	}
 	fmt.Println("Signatures is matched ~")
-	ReLaunch()
 	c.String(http.StatusOK, "OK")
+	ReLaunch()
 }
 
 // execute the shell scripts
@@ -136,6 +136,7 @@ func main() {
 	flag.Parse()
 	if h {
 		flag.Usage()
+		return
 	}
 	// Disable Console Color, you don't need console color when writing the logs to file
 	gin.DisableConsoleColor()

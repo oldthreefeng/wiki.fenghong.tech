@@ -71,7 +71,7 @@ var (
 
 // return true then deploy
 func gitPush(c *gin.Context) {
-	matched, _ := verifySignature(c)
+	matched, _ := VerifySignature(c)
 	if !matched {
 		err := "Signatures did not match"
 		c.String(http.StatusForbidden, err)
@@ -79,8 +79,8 @@ func gitPush(c *gin.Context) {
 		return
 	}
 	fmt.Println("Signatures is matched ~")
-	c.String(http.StatusOK, "OK")
 	ReLaunch()
+	c.String(http.StatusOK, "OK")
 }
 
 // execute the shell scripts
@@ -94,7 +94,7 @@ func ReLaunch() {
 }
 
 // verifySignature
-func verifySignature(c *gin.Context) (bool, error) {
+func VerifySignature(c *gin.Context) (bool, error) {
 	PayloadBody, err := c.GetRawData()
 	if err != nil {
 		return false, err
@@ -122,6 +122,12 @@ Options:
 	flag.PrintDefaults()
 }
 
+func defaultPage(g *gin.Context) {
+	 firstName := g.DefaultQuery("firstName","test")
+	 lastName := g.Query("lastName")
+	 g.String(http.StatusOK,"Hello %s %s, This is My deploy Server~",firstName,lastName)
+}
+
 func init() {
 	// use flag to change args
 	flag.StringVar(&port, "p", "8000", "listen and serve port")
@@ -134,6 +140,7 @@ func init() {
 
 func main() {
 	flag.Parse()
+
 	if h {
 		flag.Usage()
 		return
@@ -147,7 +154,8 @@ func main() {
 	// gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 
 	router := gin.Default()
-	router.GET(path, gitPush)
+	router.GET("/", defaultPage)
+	router.POST(path, gitPush)
 	_ = router.Run(":" + port)
 }
 ```

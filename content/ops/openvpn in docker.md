@@ -45,8 +45,8 @@ ccd  openvpn.conf  ovpn_env.sh
 
 按需进行子网配置,当然,如果客户端数量小于254,即可默认设置,跳过这次操作即可.
 `github`上的的[方法](https://github.com/kylemanna/docker-openvpn/issues/444)
-`server 172.20.0.0 255.255.0.0 `
-`route 172.20.0.0 255.255.0.0 `
+`server 192.168.16.0 255.255.240.0 `
+`route 192.168.16.1 255.255.240.0 `
 
 全部的配置文件如下：
 

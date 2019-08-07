@@ -1,6 +1,6 @@
 ---
 title: "docker部署企业级应用openvpn"
-date: "2019-08-04 17:09:32"
+date: "2019-08-07 10:08:32"
 tags: 
   - ops
   - vpn
@@ -9,12 +9,12 @@ tags:
 
 [TOC]
 
-### 部署openvpn-in-docker
+## 部署openvpn-in-docker
 
 - 生成默认的openvpn配置文件
 
 ```
-[root@jx_develop openvpn]# docker run -v ${OVPN_DATA}:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -c -u udp://139.196.203.158    //生成默认的openvpn配置
+[root@jx_develop openvpn]# docker run -v ${OVPN_DATA}:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -c -u udp://x.x.x.x    //生成默认的openvpn配置
 Unable to find image 'kylemanna/openvpn:latest' locally
 latest: Pulling from kylemanna/openvpn
 050382585609: Pull complete 
@@ -39,21 +39,24 @@ ccd  openvpn.conf  ovpn_env.sh
 [root@jx_develop openvpn]# vim openvpn.conf 
 ```
 
-- 增加默认用户
+### 增加默认用户
 
-默认的配置文件只有254个client链接，增加`openvpn`的用户数，
-`github`上的的方法
+默认的配置文件只有254个client链接，想要增加`openvpn`的用户数,必须增加子网数量[计算子网数](https://tool.chinaz.com/Tools/subnetmask)
+
+按需进行子网配置,当然,如果客户端数量小于254,即可默认设置,跳过这次操作即可.
+`github`上的的[方法](https://github.com/kylemanna/docker-openvpn/issues/444)
 `server 172.20.0.0 255.255.0.0 `
 `route 172.20.0.0 255.255.0.0 `
 
 全部的配置文件如下：
 
 ```
-server 172.20.0.0 255.255.0.0
+$ cat openvpn.conf
+server  192.168.16.0 255.255.240.0
 verb 3
-key /etc/openvpn/pki/private/139.196.203.158.key
+key /etc/openvpn/pki/private/x.x.x.x.key
 ca /etc/openvpn/pki/ca.crt
-cert /etc/openvpn/pki/issued/139.196.203.158.crt
+cert /etc/openvpn/pki/issued/x.x.x.x.crt
 dh /etc/openvpn/pki/dh.pem
 tls-auth /etc/openvpn/pki/ta.key
 key-direction 0
@@ -73,16 +76,43 @@ client-to-client
 comp-lzo no
 
 ### Route Configurations Below
-route 172.20.0.0 255.255.0.0
+route 192.168.16.1 255.255.240.0
 
 ### Push Configurations Below
 push "block-outside-dns"
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
 push "comp-lzo no"
+
+$ cat ovpn_env.sh
+declare -x OVPN_AUTH=
+declare -x OVPN_CIPHER=
+declare -x OVPN_CLIENT_TO_CLIENT=1
+declare -x OVPN_CN=106.75.100.62
+declare -x OVPN_COMP_LZO=0
+declare -x OVPN_DEFROUTE=1
+declare -x OVPN_DEVICE=tun
+declare -x OVPN_DEVICEN=0
+declare -x OVPN_DISABLE_PUSH_BLOCK_DNS=0
+declare -x OVPN_DNS=1
+declare -x OVPN_DNS_SERVERS=([0]="8.8.8.8" [1]="8.8.4.4")
+declare -x OVPN_ENV=/etc/openvpn/ovpn_env.sh
+declare -x OVPN_EXTRA_CLIENT_CONFIG=()
+declare -x OVPN_EXTRA_SERVER_CONFIG=()
+declare -x OVPN_FRAGMENT=
+declare -x OVPN_KEEPALIVE='10 60'
+declare -x OVPN_MTU=
+declare -x OVPN_NAT=0
+declare -x OVPN_PORT=1194
+declare -x OVPN_PROTO=udp
+declare -x OVPN_PUSH=()
+declare -x OVPN_ROUTES=([0]="192.168.16.1/20")
+declare -x OVPN_SERVER=192.168.16.0/20
+declare -x OVPN_SERVER_URL=udp://xx.x.x.x
+declare -x OVPN_TLS_CIPHER=
 ```
 
-- 证书生成
+### 证书生成
 
 > 初始化ca，dh等相关证书，要输入几次密码，都是确认Ca证书的密码
 
@@ -129,14 +159,14 @@ Using SSL: openssl OpenSSL 1.1.1c  28 May 2019
 Generating a RSA private key
 .................................+++++
 .........+++++
-writing new private key to '/etc/openvpn/pki/private/139.196.203.158.key.XXXXCOHnGl'
+writing new private key to '/etc/openvpn/pki/private/x.x.x.x.key.XXXXCOHnGl'
 -----
 Using configuration from /etc/openvpn/pki/safessl-easyrsa.cnf
 Enter pass phrase for /etc/openvpn/pki/private/ca.key:
 Check that the request matches the signature
 Signature ok
 The Subject's Distinguished Name is as follows
-commonName            :ASN.1 12:'139.196.203.158'
+commonName            :ASN.1 12:'x.x.x.x'
 Certificate is to be certified until Jul 20 07:20:59 2022 GMT (1080 days)
 
 Write out database with 1 new entries
@@ -150,7 +180,7 @@ An updated CRL has been created.
 CRL file: /etc/openvpn/pki/crl.pem
 ```
 
-- 启动服务
+### 启动服务
 
 > 暴露服务1194端口
 
@@ -162,7 +192,9 @@ openvpn
 
 ```
 
-- 生成用户配置文件
+### 生成用户配置文件
+
+生成的配置文件可以通过客户导入的方式,进行访问,无需配置,当然客户端支持`anriod`,`ios`,`win7`,`win10`,`mac`
 
 ```
 # cat sh/generate.sh 
@@ -170,16 +202,14 @@ openvpn
 read -p "please your username: " NAME
 docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn easyrsa build-client-full $NAME nopass
 docker run -v /data/openvpn:/etc/openvpn --rm kylemanna/openvpn ovpn_getclient $NAME > /data/openvpn/conf/"$NAME".ovpn
-### 禁用全局代理，仅代理宝盾系统和沣临珠宝系统。
+### 禁用全局代理，仅代理内网vpn系统。
 sed -i "/redirect-gateway def1/d"  /data/openvpn/conf/"$NAME".ovpn
 sed -i "/remote-cert-tls server/a\route 10.9.0.0 255.255.0.0 vpn_gateway" /data/openvpn/conf/"$NAME".ovpn
-sed -i "/remote-cert-tls server/a\route xx.xx.xx.xx 255.255.255.255 vpn_gateway" /data/openvpn/conf/"$NAME".ovpn
 sed -i "/remote-cert-tls server/a\route-nopull" /data/openvpn/conf/"$NAME".ovpn
-
 
 ```
 
-- 删除用户授权配置文件
+### 删除用户授权配置文件
 
 ```
 # cat sh/revoke.sh 
@@ -192,13 +222,13 @@ docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 rm -f /e
 docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 rm -f /etc/openvpn/pki/issued/"$DNAME".crt
 ```
 
-### 客户端路由配置
+## 客户端路由配置
 
 很多时候我们希望自己的客户端能够自定义路由，而且更该服务端的配置并不是一个相对较好的做法
 
 找到我们的 ovpn 配置文件
 
-到最后一行,去掉这个
+到最后一行,去掉这个,这个我在脚本里面已经去掉了
 
 `redirect-gateway def1`
 即是我们全部流量走 VPN 的配置
@@ -209,7 +239,7 @@ docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 rm -f /e
 
 - vpn_gateway
 
-当客户端加入 `route-nopull` 后,所有出去的访问都不从 OpenVPN 出去,但可通过添加 vpn_gateway 参数使部分IP访问走 OpenVPN 出去
+当客户端加入 `route-nopull` 后,所有出去的访问都不从 OpenVPN 出去,但可通过添加 vpn_gateway 参数使部分IP访问走 OpenVPN 出去,这里我写写在脚本里面自动生成了.
 
 ```
 route 192.168.255.0 255.255.255.0 vpn_gateway

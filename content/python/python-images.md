@@ -1,6 +1,6 @@
 ---
 title: "python numpy pandas "
-date: 2018-12-23 17:05
+date: 2019-8-08 17:05
 ---
 
 [TOC]
@@ -71,6 +71,55 @@ b = b.clip(0, 255)  # 为避免数据越界，将生成的灰度值裁剪至0-25
 im = Image.fromarray(b.astype('uint8'))  # 重构图像
 im.save("images/new_name.jpg")
 ```
+
+如何批量生成素描文件,这里写了一个for循环即可解决问题.
+
+```
+from PIL import Image
+import numpy as np
+import os
+
+# 传入的一个是文件全路径,一个是获取文件名称
+def generate(name, txt):
+    a = np.asarray(Image.open(name).convert('L')).astype('float')  # convert('L')灰度图片
+    depth = 10.  # (0-100)
+    grad = np.gradient(a)  # 取图像灰度的梯度值
+    grad_x, grad_y = grad  # 分别取横纵图像梯度值
+    grad_x = grad_x * depth / 100.
+    grad_y = grad_y * depth / 100.
+    ax = np.sqrt(grad_x ** 2 + grad_y ** 2 + 1.)
+    uni_x = grad_x / ax
+    uni_y = grad_y / ax
+    uni_z = 1. / ax
+    vec_el = np.pi / 2.2  # 光源的俯视角度，弧度值
+    vec_az = np.pi / 4.  # 光源的方位角度，弧度值
+    dx = np.cos(vec_el) * np.cos(vec_az)  # 光源对x 轴的影响
+    dy = np.cos(vec_el) * np.sin(vec_az)  # 光源对y 轴的影响
+    dz = np.sin(vec_el)  # 光源对z 轴的影响
+    b = 255 * (dx * uni_x + dy * uni_y + dz * uni_z)  # 光源归一化
+    b = b.clip(0, 255)  # 为避免数据越界，将生成的灰度值裁剪至0-255区间
+    im = Image.fromarray(b.astype('uint8'))  # 重构图像
+    im.save("images/" + txt[-1])
+
+# 获取当前目录下的所有以jpg结尾的文件
+def get_files(path='D:\\text', rule=".jpg"):
+    allfile = []
+    for fpath, dirs, fs in os.walk(path):  # os.walk是获取所有的目录
+        for f in fs:
+            filename = os.path.join(fpathe, f)
+            if filename.endswith(rule):  # 判断是否是"xxx"结尾
+                allfile.append(filename)
+    return allfile
+
+# 入口函数
+if __name__ == "__main__":
+    b = get_files(r"D:\text")
+    for i in b:
+        txt = i.split("\\")
+        generate(i, txt)
+```
+
+
 
 ## python的matplotlib库
 

@@ -1,3 +1,6 @@
 upload.sh
 output/
 .git
+*.sh
+*.iml
+*.xml

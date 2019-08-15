@@ -1,13 +1,13 @@
 ---
-title: "Kubuntu from install to use ssr"
+title: "use ssr in ubuntu"
 date: "2018-12-12 09:59:32"
 tags: 
 - Linux
 - ubuntu
-- shadowsocks
+- shadowSocks
 - chrome
 - SwitchyOmega
-collection: Manage Kownledge
+collection: Manage Knowledge
 ---
 
 [TOC]

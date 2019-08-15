@@ -212,14 +212,18 @@ func main() {
 	}
 	fmt.Println("主线程退出")
 }
-//每次得到的时间差不多,但是有区别
-//普通方法耗时 = 94148451100
-//使用协程耗时 = 44439510400
+// 每次得到的时间差不多,但是有区别
+// 在8Vcpu的linux服务器上运行,起了8个goroutine,速度提升5倍.
+// # go build goPrime.go 
+// # ./goPrime 
+// 普通方法耗时 =58192386339
+// 使用协程耗时= 11656927279
+// 主线程退出
 ```
 
-计算一个1-20000000内的素数,速度提升了2倍.
+计算一个1-20000000内的素数,goroutine速度提升了5倍.且可以使用`top`命令查询运行的时候,CPU在普通的for循环只占用100%,而用了8个goroutine的,CPU却直接飙升至700%.
 
-想要了解更多的channel,可以看看mooc老师的`logProcess`的那个教学视频[mooc](https://www.imooc.com/learn/982),很不错,利用golang将的高并发特效,这个是跟着老师码下来的源码[点击看源码](https://gogs.wangke.co/go/demoLogprocess/src/master/log_process.go)
+想要了解更多的channel,可以看看Mooc老师的`logProcess`的那个教学视频[mooc](https://www.imooc.com/learn/982),很不错,利用golang将的高并发特效,这个是跟着老师码下来的源码[点击看源码](https://gogs.wangke.co/go/demoLogprocess/src/master/log_process.go)
 
 - 参考
 

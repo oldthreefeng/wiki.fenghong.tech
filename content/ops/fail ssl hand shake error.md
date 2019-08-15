@@ -1,9 +1,8 @@
 ---
-title: "小程序request:fail ssl hand shake error问题"
+title: "小程序request:fail ssl hand shake error"
 date: "2019-04-22 09:59:32"
 tags: 
 - Linux
-collection: Manage Kownledge
 ---
 
 [TOC]

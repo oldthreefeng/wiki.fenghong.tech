@@ -17,7 +17,7 @@ tags:
 
 - 安装插件
 
-在系统管理页面点击` -->`Manage Plugins`-->`Available`,在`Filter`中输入`Role based`,找到我们想要的插件,安装即可.
+在系统管理页面点击` Manage Jenkins` -->`Manage Plugins`-->`Available`,在`Filter`中输入`Role based`,找到我们想要的插件,安装即可.
 
 - 配置使用插件
 

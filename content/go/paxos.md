@@ -156,7 +156,7 @@ type mes struct {
 }
 
 func (m mes) proposalValue() string {
-	// 返回value需要什么条件呢？
+	//返回value需要什么条件呢？
 	switch m.typ {
 	case Accept, Promise:
 		return m.value
@@ -370,7 +370,7 @@ func (p *proposer) prepare() []mes {
 	}
 	return m
 }
-
+//c.1 更新proposer里面的acceptor,保证proposer存入的acceptor提案N为最新
 // 从acceptor接收的promise消息.
 func (p *proposer) receivePromise(promise mes) {
 	prePromise := p.acceptors[promise.from]
@@ -419,7 +419,7 @@ func (a *acceptor) run() {
 		}
 		switch m.typ {
 		case Propose:
-			// d. 接收proposer的提案N,如果已接收提案N>返回的propose的提案N,则忽略
+			//d. 接收proposer的提案N,如果已接收提案N>返回的propose的提案N,则忽略
 			//    如果已接收提案N< 返回的propose提案N,说明错误;违反了P2c原则
 			//    如果相同,则接收提案N,将propose提案存入accept里面,并将accept.typ改为接受.
 			accepted := a.receivePropose(m)
@@ -493,18 +493,27 @@ type learner struct {
 	id        int
 	acceptors map[int]accept
 	nt        network
-	value 	  string   //测试数据比对,learner学习后得到的提案N对应的V[N,V]
+	value 	  chan string   //测试数据比对,learner学习后得到的提案N对应的V[N,V]
 }
 
 func NewLearner(id int, nt network, acceptors ...int) *learner {
-	l := &learner{id: id, nt: nt, acceptors: make(map[int]accept)}
+	l := &learner{id: id, nt: nt, acceptors: make(map[int]accept),value:make(chan string)}
 	for _, a := range acceptors {
 		l.acceptors[a] = mes{typ: Accept}
 	}
 	return l
 }
 
-func (l *learner) learn() string {
+func (l *learner) GetValue() (v string ) {
+	select {
+	case v := <-l.value:
+		return v
+	case <-time.After(time.Second):
+		return
+	}
+}
+
+func (l *learner) learn()  {
 	for {
 		//f. 等待acceptor发送accept mes,
 		m, ok := l.nt.recv(time.Hour)
@@ -523,8 +532,8 @@ func (l *learner) learn() string {
 			continue
 		}
 		log.Printf("learner :%d has chosen proposal : %v ", l.id, accept)
-		l.value = accept.proposalValue()
-		return l.value
+		l.value <- accept.proposalValue()
+		return
 	}
 }
 
@@ -555,6 +564,7 @@ func (l *learner) chosen() (accept, bool) {
 func (l *learner) quorum() int {
 	return len(l.acceptors)/2 + 1
 }
+
 
 //f.2 从accepted消息中来进行比对,如果接收的提案N > learner存入的提案N,需要重新学习;否则就忽略
 func (l *learner) receiveAccept(accepted mes) {
@@ -639,7 +649,7 @@ func TestSingleProposer(t *testing.T) {
 	go l1.learn()
 	go l.learn()
 	if l.value != l1.value {
-		t.Errorf("value = %s,wantValue = %s", l.learn(), wantValue)
+		t.Errorf("value = %s,wantValue = %s", l.GetValue(), wantValue)
 	}
 	time.Sleep(500 * time.Millisecond)
 }
@@ -667,11 +677,12 @@ func TestTwoPropose(t *testing.T) {
 	go p2.run()
 
 	l := NewLearner(2001, pn.agentNet(2001), 1, 2, 3)
-	value := l.learn()
-	if value != wantV2 {
-		t.Errorf("value = %s,wantValue = %s", value, wantV2)
+	go l.learn()
+	va := l.GetValue()
+	if va != wantV2 {
+		t.Errorf("value = %s,wantValue = %s", va, wantV2)
 	}
-	time.Sleep(300 * time.Microsecond)
+
 }
 
 func TestNPropose(t *testing.T) {
@@ -692,97 +703,107 @@ func TestNPropose(t *testing.T) {
 	for _, p := range pp {
 		go p.run()
 	}
-
-	l := NewLearner(2001, pn.agentNet(2001), 1, 2, 3)
-	l1 := NewLearner(2002, pn.agentNet(2001), 1, 2, 3)
-	go l.learn()
-	go l1.learn()
-	if l.value != l1.value {
-		t.Errorf("value = %s,wantValue = %s", l.value, l1.value)
+	//这里模拟两个learner
+	ln := make([]*learner, 0)
+	for i := 2001; i <= 2002; i++ {
+		ln = append(ln, NewLearner(i, pn.agentNet(i), 1, 2, 3))
 	}
-	time.Sleep(300 * time.Millisecond)
+	var v [2]string
+    // 将learner学习获取的value存入[]string切片
+	for k, l := range ln {
+		go l.learn()
+		v[k] = l.GetValue()
+	}
+	if v[0] != v[1] {
+		t.Errorf("value = %s,wantValue = %s", v[0], v[1])
+	}
+	time.Sleep(500 * time.Millisecond)
 }
+
 ```
 
 ### 验证结果:
 
 ```
 === RUN   TestNPropose
-2019/08/28 16:50:43 nt send message :{from:1001 to:1 typ:1 n:66537 pren:0 value:}
-2019/08/28 16:50:44 nt send message :{from:1001 to:2 typ:1 n:66537 pren:0 value:}
-2019/08/28 16:50:44 nt recv message :{from:1001 to:1 typ:1 n:66537 pren:0 value:}
-2019/08/28 16:50:44 acceptor 1 [promised: {from:0 to:0 typ:0 n:0 pren:0 value:}]  promised {from:1001 to:1 typ:1 n:66537 pren:0 value:}
-2019/08/28 16:50:44 nt send message :{from:1 to:1001 typ:3 n:66537 pren:0 value:}
-2019/08/28 16:50:44 nt recv message :{from:1 to:1001 typ:3 n:66537 pren:0 value:}
-2019/08/28 16:50:44 proposer: 1001 received a new promise {from:1 to:1001 typ:3 n:66537 pren:0 value:}
-2019/08/28 16:50:43 nt send message :{from:1002 to:1 typ:1 n:66538 pren:0 value:}
-2019/08/28 16:50:44 nt send message :{from:1002 to:2 typ:1 n:66538 pren:0 value:}
-2019/08/28 16:50:44 nt recv message :{from:1002 to:1 typ:1 n:66538 pren:0 value:}
-2019/08/28 16:50:44 acceptor 1 [promised: {from:1001 to:1 typ:1 n:66537 pren:0 value:}]  promised {from:1002 to:1 typ:1 n:66538 pren:0 value:}
-2019/08/28 16:50:44 nt send message :{from:1 to:1002 typ:3 n:66538 pren:0 value:}
-2019/08/28 16:50:44 nt recv message :{from:1001 to:2 typ:1 n:66537 pren:0 value:}
-2019/08/28 16:50:44 acceptor 2 [promised: {from:0 to:0 typ:0 n:0 pren:0 value:}]  promised {from:1001 to:2 typ:1 n:66537 pren:0 value:}
-2019/08/28 16:50:44 nt send message :{from:2 to:1001 typ:3 n:66537 pren:0 value:}
-2019/08/28 16:50:44 nt recv message :{from:1002 to:2 typ:1 n:66538 pren:0 value:}
-2019/08/28 16:50:44 acceptor 2 [promised: {from:1001 to:2 typ:1 n:66537 pren:0 value:}]  promised {from:1002 to:2 typ:1 n:66538 pren:0 value:}
-2019/08/28 16:50:44 nt send message :{from:2 to:1002 typ:3 n:66538 pren:0 value:}
-2019/08/28 16:50:44 nt recv message :{from:2 to:1001 typ:3 n:66537 pren:0 value:}
-2019/08/28 16:50:44 proposer: 1001 received a new promise {from:2 to:1001 typ:3 n:66537 pren:0 value:}
-2019/08/28 16:50:44 1001 promise 66537 reached quorum 2
-proposer 1001: 2019/08/28 16:50:44 nt send message :{from:1001 to:1 typ:2 n:66537 pren:0 value:hello world v1001}
-proposer 1001: 2019/08/28 16:50:44 nt send message :{from:1001 to:2 typ:2 n:66537 pren:0 value:hello world v1001}
-2019/08/28 16:50:44 nt recv message :{from:1001 to:2 typ:2 n:66537 pren:0 value:hello world v1001}
-2019/08/28 16:50:44 acceptor 2 [promised: {from:1002 to:2 typ:1 n:66538 pren:0 value:}] ignored propose mes: {from:1001 to:2 typ:2 n:66537 pren:0 value:hello world v1001}
-2019/08/28 16:50:44 nt recv message :{from:1 to:1002 typ:3 n:66538 pren:0 value:}
-2019/08/28 16:50:44 proposer: 1002 received a new promise {from:1 to:1002 typ:3 n:66538 pren:0 value:}
-2019/08/28 16:50:44 nt recv message :{from:2 to:1002 typ:3 n:66538 pren:0 value:}
-2019/08/28 16:50:44 proposer: 1002 received a new promise {from:2 to:1002 typ:3 n:66538 pren:0 value:}
-2019/08/28 16:50:44 1002 promise 66538 reached quorum 2
-proposer 1002: 2019/08/28 16:50:44 nt send message :{from:1002 to:1 typ:2 n:66538 pren:0 value:hello world v1002}
-proposer 1002: 2019/08/28 16:50:44 nt send message :{from:1002 to:2 typ:2 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt recv message :{from:1002 to:2 typ:2 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 acceptor 2 [promised: {from:1002 to:2 typ:1 n:66538 pren:0 value:}, accept: {from:0 to:0 typ:0 n:0 pren:0 value:}]  accepted propose: {from:1002 to:2 typ:2 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt send message :{from:2 to:2001 typ:4 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt send message :{from:2 to:2002 typ:4 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt recv message :{from:2 to:2001 typ:4 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 learner 2001 has learned a new proposal mes: {from:2 to:2001 typ:4 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt recv message :{from:1001 to:1 typ:2 n:66537 pren:0 value:hello world v1001}
-2019/08/28 16:50:44 acceptor 1 [promised: {from:1002 to:1 typ:1 n:66538 pren:0 value:}] ignored propose mes: {from:1001 to:1 typ:2 n:66537 pren:0 value:hello world v1001}
-2019/08/28 16:50:44 nt recv message :{from:1002 to:1 typ:2 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 acceptor 1 [promised: {from:1002 to:1 typ:1 n:66538 pren:0 value:}, accept: {from:0 to:0 typ:0 n:0 pren:0 value:}]  accepted propose: {from:1002 to:1 typ:2 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt send message :{from:1 to:2001 typ:4 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt send message :{from:1 to:2002 typ:4 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt recv message :{from:1 to:2001 typ:4 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 learner 2002 has learned a new proposal mes: {from:1 to:2001 typ:4 n:66538 pren:0 value:hello world v1002}
-2019/08/28 16:50:43 nt send message :{from:1003 to:1 typ:1 n:66539 pren:0 value:}
-2019/08/28 16:50:44 nt send message :{from:1003 to:2 typ:1 n:66539 pren:0 value:}
-2019/08/28 16:50:44 nt recv message :{from:1003 to:2 typ:1 n:66539 pren:0 value:}
-2019/08/28 16:50:44 acceptor 2 [promised: {from:1002 to:2 typ:1 n:66538 pren:0 value:}]  promised {from:1003 to:2 typ:1 n:66539 pren:0 value:}
-2019/08/28 16:50:44 nt send message :{from:2 to:1003 typ:3 n:66539 pren:66538 value:hello world v1002}
-2019/08/28 16:50:44 nt recv message :{from:2 to:1003 typ:3 n:66539 pren:66538 value:hello world v1002}
-2019/08/28 16:50:44 proposer: 1003 received a new promise {from:2 to:1003 typ:3 n:66539 pren:66538 value:hello world v1002}
-2019/08/28 16:50:44 proposer: 1003 updated the value [hello world v1003] to hello world v1002
-2019/08/28 16:50:44 nt recv message :{from:1003 to:1 typ:1 n:66539 pren:0 value:}
-2019/08/28 16:50:44 acceptor 1 [promised: {from:1002 to:1 typ:1 n:66538 pren:0 value:}]  promised {from:1003 to:1 typ:1 n:66539 pren:0 value:}
-2019/08/28 16:50:44 nt send message :{from:1 to:1003 typ:3 n:66539 pren:66538 value:hello world v1002}
-2019/08/28 16:50:44 nt recv message :{from:1 to:1003 typ:3 n:66539 pren:66538 value:hello world v1002}
-2019/08/28 16:50:44 proposer: 1003 received a new promise {from:1 to:1003 typ:3 n:66539 pren:66538 value:hello world v1002}
-2019/08/28 16:50:44 1003 promise 66539 reached quorum 2
-proposer 1003: 2019/08/28 16:50:44 nt send message :{from:1003 to:2 typ:2 n:66539 pren:0 value:hello world v1002}
-proposer 1003: 2019/08/28 16:50:44 nt send message :{from:1003 to:1 typ:2 n:66539 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt recv message :{from:1003 to:1 typ:2 n:66539 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 acceptor 1 [promised: {from:1003 to:1 typ:1 n:66539 pren:0 value:}, accept: {from:1002 to:1 typ:4 n:66538 pren:0 value:hello world v1002}]  accepted propose: {from:1003 to:1 typ:2 n:66539 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt send message :{from:1 to:2001 typ:4 n:66539 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt send message :{from:1 to:2002 typ:4 n:66539 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt recv message :{from:1 to:2001 typ:4 n:66539 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 learner 2001 has learned a new proposal mes: {from:1 to:2001 typ:4 n:66539 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt recv message :{from:1003 to:2 typ:2 n:66539 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 acceptor 2 [promised: {from:1003 to:2 typ:1 n:66539 pren:0 value:}, accept: {from:1002 to:2 typ:4 n:66538 pren:0 value:hello world v1002}]  accepted propose: {from:1003 to:2 typ:2 n:66539 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt send message :{from:2 to:2001 typ:4 n:66539 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt send message :{from:2 to:2002 typ:4 n:66539 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 nt recv message :{from:2 to:2001 typ:4 n:66539 pren:0 value:hello world v1002}
-2019/08/28 16:50:44 learner 2002 has learned a new proposal mes: {from:2 to:2001 typ:4 n:66539 pren:0 value:hello world v1002}
---- PASS: TestNPropose (0.30s)
+2019/08/28 18:58:29 nt send message :{from:1001 to:1 typ:1 n:66537 pren:0 value:}
+2019/08/28 18:58:29 nt send message :{from:1001 to:2 typ:1 n:66537 pren:0 value:}
+2019/08/28 18:58:29 nt recv message :{from:1001 to:1 typ:1 n:66537 pren:0 value:}
+2019/08/28 18:58:29 acceptor 1 [promised: {from:0 to:0 typ:0 n:0 pren:0 value:}]  promised {from:1001 to:1 typ:1 n:66537 pren:0 value:}
+2019/08/28 18:58:29 nt send message :{from:1 to:1001 typ:3 n:66537 pren:0 value:}
+2019/08/28 18:58:29 nt recv message :{from:1001 to:2 typ:1 n:66537 pren:0 value:}
+2019/08/28 18:58:29 acceptor 2 [promised: {from:0 to:0 typ:0 n:0 pren:0 value:}]  promised {from:1001 to:2 typ:1 n:66537 pren:0 value:}
+2019/08/28 18:58:29 nt send message :{from:2 to:1001 typ:3 n:66537 pren:0 value:}
+2019/08/28 18:58:29 nt send message :{from:1002 to:3 typ:1 n:66538 pren:0 value:}
+2019/08/28 18:58:29 nt send message :{from:1002 to:1 typ:1 n:66538 pren:0 value:}
+2019/08/28 18:58:29 nt recv message :{from:1002 to:1 typ:1 n:66538 pren:0 value:}
+2019/08/28 18:58:29 acceptor 1 [promised: {from:1001 to:1 typ:1 n:66537 pren:0 value:}]  promised {from:1002 to:1 typ:1 n:66538 pren:0 value:}
+2019/08/28 18:58:29 nt send message :{from:1 to:1002 typ:3 n:66538 pren:0 value:}
+2019/08/28 18:58:29 nt recv message :{from:1 to:1002 typ:3 n:66538 pren:0 value:}
+2019/08/28 18:58:29 proposer: 1002 received a new promise {from:1 to:1002 typ:3 n:66538 pren:0 value:}
+2019/08/28 18:58:29 nt send message :{from:1003 to:1 typ:1 n:66539 pren:0 value:}
+2019/08/28 18:58:29 nt send message :{from:1003 to:2 typ:1 n:66539 pren:0 value:}
+2019/08/28 18:58:29 nt recv message :{from:1003 to:2 typ:1 n:66539 pren:0 value:}
+2019/08/28 18:58:29 acceptor 2 [promised: {from:1001 to:2 typ:1 n:66537 pren:0 value:}]  promised {from:1003 to:2 typ:1 n:66539 pren:0 value:}
+2019/08/28 18:58:29 nt send message :{from:2 to:1003 typ:3 n:66539 pren:0 value:}
+2019/08/28 18:58:29 nt recv message :{from:2 to:1003 typ:3 n:66539 pren:0 value:}
+2019/08/28 18:58:29 proposer: 1003 received a new promise {from:2 to:1003 typ:3 n:66539 pren:0 value:}
+2019/08/28 18:58:29 nt recv message :{from:1002 to:3 typ:1 n:66538 pren:0 value:}
+2019/08/28 18:58:29 acceptor 3 [promised: {from:0 to:0 typ:0 n:0 pren:0 value:}]  promised {from:1002 to:3 typ:1 n:66538 pren:0 value:}
+2019/08/28 18:58:29 nt send message :{from:3 to:1002 typ:3 n:66538 pren:0 value:}
+2019/08/28 18:58:29 nt recv message :{from:3 to:1002 typ:3 n:66538 pren:0 value:}
+2019/08/28 18:58:29 proposer: 1002 received a new promise {from:3 to:1002 typ:3 n:66538 pren:0 value:}
+2019/08/28 18:58:29 1002 promise 66538 reached quorum 2
+proposer 1002: 2019/08/28 18:58:29 nt send message :{from:1002 to:1 typ:2 n:66538 pren:0 value:hello world v1002}
+proposer 1002: 2019/08/28 18:58:29 nt send message :{from:1002 to:3 typ:2 n:66538 pren:0 value:hello world v1002}
+2019/08/28 18:58:29 nt recv message :{from:1002 to:3 typ:2 n:66538 pren:0 value:hello world v1002}
+2019/08/28 18:58:29 acceptor 3 [promised: {from:1002 to:3 typ:1 n:66538 pren:0 value:}, accept: {from:0 to:0 typ:0 n:0 pren:0 value:}]  accepted propose: {from:1002 to:3 typ:2 n:66538 pren:0 value:hello world v1002}
+2019/08/28 18:58:29 nt send message :{from:3 to:2001 typ:4 n:66538 pren:0 value:hello world v1002}
+2019/08/28 18:58:29 nt send message :{from:3 to:2002 typ:4 n:66538 pren:0 value:hello world v1002}
+2019/08/28 18:58:29 nt recv message :{from:3 to:2001 typ:4 n:66538 pren:0 value:hello world v1002}
+2019/08/28 18:58:29 learner 2001 has learned a new proposal mes: {from:3 to:2001 typ:4 n:66538 pren:0 value:hello world v1002}
+2019/08/28 18:58:29 nt recv message :{from:1003 to:1 typ:1 n:66539 pren:0 value:}
+2019/08/28 18:58:29 acceptor 1 [promised: {from:1002 to:1 typ:1 n:66538 pren:0 value:}]  promised {from:1003 to:1 typ:1 n:66539 pren:0 value:}
+2019/08/28 18:58:29 nt send message :{from:1 to:1003 typ:3 n:66539 pren:0 value:}
+2019/08/28 18:58:29 nt recv message :{from:1002 to:1 typ:2 n:66538 pren:0 value:hello world v1002}
+2019/08/28 18:58:29 acceptor 1 [promised: {from:1003 to:1 typ:1 n:66539 pren:0 value:}] ignored propose mes: {from:1002 to:1 typ:2 n:66538 pren:0 value:hello world v1002}
+2019/08/28 18:58:29 nt recv message :{from:1 to:1003 typ:3 n:66539 pren:0 value:}
+2019/08/28 18:58:29 proposer: 1003 received a new promise {from:1 to:1003 typ:3 n:66539 pren:0 value:}
+2019/08/28 18:58:29 1003 promise 66539 reached quorum 2
+proposer 1003: 2019/08/28 18:58:29 nt send message :{from:1003 to:1 typ:2 n:66539 pren:0 value:hello world v1003}
+proposer 1003: 2019/08/28 18:58:29 nt send message :{from:1003 to:2 typ:2 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 nt recv message :{from:1003 to:2 typ:2 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 acceptor 2 [promised: {from:1003 to:2 typ:1 n:66539 pren:0 value:}, accept: {from:0 to:0 typ:0 n:0 pren:0 value:}]  accepted propose: {from:1003 to:2 typ:2 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 nt send message :{from:2 to:2001 typ:4 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 nt send message :{from:2 to:2002 typ:4 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 nt recv message :{from:2 to:2001 typ:4 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 learner 2001 has learned a new proposal mes: {from:2 to:2001 typ:4 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 nt recv message :{from:1003 to:1 typ:2 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 acceptor 1 [promised: {from:1003 to:1 typ:1 n:66539 pren:0 value:}, accept: {from:0 to:0 typ:0 n:0 pren:0 value:}]  accepted propose: {from:1003 to:1 typ:2 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 nt send message :{from:1 to:2001 typ:4 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 nt send message :{from:1 to:2002 typ:4 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 nt recv message :{from:1 to:2001 typ:4 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 learner 2001 has learned a new proposal mes: {from:1 to:2001 typ:4 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 learner :2001 has chosen proposal : {2 2001 4 66539 0 hello world v1003} 
+2019/08/28 18:58:29 nt recv message :{from:3 to:2002 typ:4 n:66538 pren:0 value:hello world v1002}
+2019/08/28 18:58:29 learner 2002 has learned a new proposal mes: {from:3 to:2002 typ:4 n:66538 pren:0 value:hello world v1002}
+2019/08/28 18:58:29 nt recv message :{from:2 to:2002 typ:4 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 learner 2002 has learned a new proposal mes: {from:2 to:2002 typ:4 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 nt recv message :{from:1 to:2002 typ:4 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 learner 2002 has learned a new proposal mes: {from:1 to:2002 typ:4 n:66539 pren:0 value:hello world v1003}
+2019/08/28 18:58:29 learner :2002 has chosen proposal : {2 2002 4 66539 0 hello world v1003} 
+2019/08/28 18:58:29 nt recv message :{from:1 to:1001 typ:3 n:66537 pren:0 value:}
+2019/08/28 18:58:29 proposer: 1001 received a new promise {from:1 to:1001 typ:3 n:66537 pren:0 value:}
+2019/08/28 18:58:29 nt recv message :{from:2 to:1001 typ:3 n:66537 pren:0 value:}
+2019/08/28 18:58:29 proposer: 1001 received a new promise {from:2 to:1001 typ:3 n:66537 pren:0 value:}
+2019/08/28 18:58:29 1001 promise 66537 reached quorum 2
+proposer 1001: 2019/08/28 18:58:29 nt send message :{from:1001 to:1 typ:2 n:66537 pren:0 value:hello world v1001}
+proposer 1001: 2019/08/28 18:58:29 nt send message :{from:1001 to:2 typ:2 n:66537 pren:0 value:hello world v1001}
+2019/08/28 18:58:29 nt recv message :{from:1001 to:2 typ:2 n:66537 pren:0 value:hello world v1001}
+2019/08/28 18:58:29 acceptor 2 [promised: {from:1003 to:2 typ:1 n:66539 pren:0 value:}] ignored propose mes: {from:1001 to:2 typ:2 n:66537 pren:0 value:hello world v1001}
+2019/08/28 18:58:29 nt recv message :{from:1001 to:1 typ:2 n:66537 pren:0 value:hello world v1001}
+2019/08/28 18:58:29 acceptor 1 [promised: {from:1003 to:1 typ:1 n:66539 pren:0 value:}] ignored propose mes: {from:1001 to:1 typ:2 n:66537 pren:0 value:hello world v1001}
+--- PASS: TestNPropose (0.65s)
 PASS
 ```
 

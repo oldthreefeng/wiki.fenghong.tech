@@ -812,5 +812,5 @@ PASS
 ### 参考
 
 - 大佬的[github传送车](https://github.com/xiang90/paxos)
-- [维基百科]([https://zh.wikipedia.org/wiki/Paxos%E7%AE%97%E6%B3%95](https://zh.wikipedia.org/wiki/Paxos算法))
+- [维基百科](https://zh.wikipedia.org/wiki/Paxos算法)
 

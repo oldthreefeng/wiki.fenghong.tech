@@ -120,13 +120,41 @@ $ acme.sh --install-cert -d *.example.com --key-file  /etc/nginx/sslkey/cert.exa
 [Mon Sep  2 10:20:54 CST 2019] ===End cron===
 ```
 
-这条命令会生成一个`crontab`
+这条命令会生成一个`crontab`;
+
+`--install-cert`是将泛域名`*.example.com`进行安装到指定的目录.
+
+`--key-file ` 是将泛域名`*.example.com`这个证书的key安装的位置.
+
+比如`/etc/nginx/sslkey/cert.example.com.key`;
+
+`--fullchain-file `是将泛域名`*.example.com`这个证书的`cer`安装的位置
+
+如`/etc/nginx/sslkey/example.fullchain.cer`;
+
+`--reloadcmd` 证书生成之后重启nginx,实现自动`renew`
 
 ```
 $ acme.sh --install-cert -d *.example.com --key-file  /etc/nginx/sslkey/cert.example.com.key --fullchain-file /etc/nginx/sslkey/example.fullchain.cer  --reloadcmd "nginx -s reload" --force
 
 $ crontab -l
 47 0 * * * "/root/.acme.sh"/acme.sh --cron --home "/root/.acme.sh" > /dev/null
+```
+
+在`nginx.conf`中的ssl配置片段如下:
+
+```
+server {
+	listen 443 ssl;
+	## server_name 可以是*.example.com任意一个,证书都是下面这个.
+	server_name admin.example.com;
+	ssl_certificate   /etc/nginx/sslkey/example.fullchain.cer;
+	ssl_certificate_key  /etc/nginx/sslkey/cert.example.com.key;
+	ssl_session_timeout 5m;
+	ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+	ssl_prefer_server_ciphers on;
+}
 ```
 
 至此,大功告成.

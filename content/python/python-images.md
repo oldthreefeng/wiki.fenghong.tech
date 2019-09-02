@@ -104,7 +104,7 @@ def generate(name, txt):
 # 获取当前目录下的所有以jpg结尾的文件
 def get_files(path='D:\\text', rule=".jpg"):
     allfile = []
-    for fpath, dirs, fs in os.walk(path):  # os.walk是获取所有的目录
+    for fpathe, dirs, fs in os.walk(path):  # os.walk是获取所有的目录
         for f in fs:
             filename = os.path.join(fpathe, f)
             if filename.endswith(rule):  # 判断是否是"xxx"结尾

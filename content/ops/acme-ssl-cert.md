@@ -1,5 +1,5 @@
 ---
-title: "use ssr in ubuntu"
+title: "use acme.sh to renew ssl cert"
 date: "2019-09-02 09:59:32"
 tags: 
 - ssl

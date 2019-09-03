@@ -362,3 +362,6 @@ print(r1)
 - [wiki-correlation](https://en.wikipedia.org/wiki/Correlation_and_dependence)
 - [慕课昊天](http://www.icourse163.org/learn/BIT-1001870002?tid=1001963001#/learn/content)
 
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=default">
+</script>

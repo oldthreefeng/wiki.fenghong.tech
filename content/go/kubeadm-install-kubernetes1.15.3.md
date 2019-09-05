@@ -1,9 +1,9 @@
 ---
-title: "kubeadm 安装 kubernetes1.15"
-date: 2019-06-27 15:56
+title: "kubeadm 安装 kubernetes1.15.3"
+date: 2019-08-29 15:56
 tag: 
 - go
-- kubernetes1.15
+- kubernetes1.15.3
 ---
 
 [TOC]
@@ -104,7 +104,7 @@ $ sysctl -p /etc/sysctl.d/kubernetes.conf
 
 ### 安装Docker
 
-Kubernetes从1.6开始使用CRI(Container Runtime Interface)容器运行时接口。默认的容器运行时仍然是Docker，使用的是kubelet中内置`dockershim` CRI实现。
+Kubernetes从1.6开始使用CRI(Container Runtime Interface)容器运行时接口。默认的容器运行时仍然是Docker，使用的是`kubelet`中内置`dockershim` CRI实现。
 
 ```bash
 $ yum install -y yum-utils \
@@ -138,9 +138,10 @@ Error: Package: 3:docker-ce-18.09.3-3.el7.x86_64 (docker-ce-stable)
  You could try running: rpm -Va --nofiles --nodigest
 ```
 
-centosm默认yum安装docker会报错`container-selinux >= 2.9`,建存储库以指向CentOS repo。在其中创建一个文件`/etc/yum.repos.d`并为其命名，`centos.repo`并添加以下存储库资源。
+`centos`默认yum安装docker会报错`container-selinux >= 2.9`,建存储库以指向CentOS repo。在其中创建一个文件`/etc/yum.repos.d`并为其命名，`centos.repo`并添加以下存储库资源。
 
 ```bash
+ cat > /etc/yum.repo.d/centos.repo <<EOF
 # Create new repo to enable CentOS
 [centos]
 name=CentOS-7
@@ -148,6 +149,7 @@ baseurl=http://ftp.heanet.ie/pub/centos/7/os/x86_64/
 enabled=1
 gpgcheck=1
 gpgkey=http://ftp.heanet.ie/pub/centos/7/os/x86_64/RPM-GPG-KEY-CentOS-7
+EOF
 ```
 
 然后，`container-selinux`从CentOS镜像站点安装。将版本更改为此站点中列出的最新版本。
@@ -183,31 +185,36 @@ google镜像问题，需要科学上网才能解决，这里提供代理解决�
 ```bash
 $ cat  <<EOF > azk8s.sh 
 #!/bin/bash
+#!/bin/bash
 ## k8s关键镜像 ##
-docker pull gcr.azk8s.cn/google_containers/coredns:1.3.1 k8s.gcr.io/coredns:1.3.1
-docker pull gcr.azk8s.cn/google_containers/etcd:3.3.10 k8s.gcr.io/etcd:3.3.10
-docker pull gcr.azk8s.cn/google_containers/kube-scheduler:v1.15.0 k8s.gcr.io/kube-scheduler:v1.15.0
-docker pull gcr.azk8s.cn/google_containers/kube-controller-manager:v1.15.0 k8s.gcr.io/kube-controller-manager:v1.15.0
-docker pull gcr.azk8s.cn/google_containers/kube-apiserver:v1.15.0 k8s.gcr.io/kube-apiserver:v1.15.0
-docker pull gcr.azk8s.cn/google_containers/kube-proxy:v1.15.0 
+docker pull gcr.azk8s.cn/google_containers/coredns:1.3.1 
+docker pull gcr.azk8s.cn/google_containers/etcd:3.3.10 
+docker pull gcr.azk8s.cn/google_containers/kube-scheduler:v1.15.3 
+docker pull gcr.azk8s.cn/google_containers/kube-controller-manager:v1.15.3 
+docker pull gcr.azk8s.cn/google_containers/kube-apiserver:v1.15.3 
+docker pull gcr.azk8s.cn/google_containers/kube-proxy:v1.15.3 
 docker pull gcr.azk8s.cn/google_containers/pause:3.1
 
 ## helm和tiller和dashboard镜像 ##
-docker pull gcr.azk8s.cn/kubernetes-helm/tiller:v2.14.1 
+docker pull gcr.azk8s.cn/kubernetes-helm/tiller:v2.14.3 
 docker pull gcr.azk8s.cn/google_containers/kubernetes-dashboard-amd64:v1.10.1
-docker pull gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.1
 
+## ingress-backend ##
+docker pull gcr.azk8s.cn/google_containers/defaultbackend-amd64:1.5
+docker tag gcr.azk8s.cn/google_containers/defaultbackend-amd64:1.5 k8s.gcr.io/defaultbackend-amd64:1.5 
+## metrics-server ##
+docker pull gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.4 
+docker tag gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.4 gcr.io/google_containers/metrics-server-amd64:v0.3.4
 ## 重新tag 镜像 ##
 docker tag gcr.azk8s.cn/google_containers/coredns:1.3.1 k8s.gcr.io/coredns:1.3.1
 docker tag gcr.azk8s.cn/google_containers/etcd:3.3.10 k8s.gcr.io/etcd:3.3.10
 docker tag gcr.azk8s.cn/google_containers/pause:3.1 k8s.gcr.io/pause:3.1
-docker tag gcr.azk8s.cn/google_containers/kube-proxy:v1.15.0 k8s.gcr.io/kube-proxy:v1.15.0
-docker tag gcr.azk8s.cn/google_containers/kube-scheduler:v1.15.0 k8s.gcr.io/kube-scheduler:v1.15.0
-docker tag gcr.azk8s.cn/google_containers/kube-controller-manager:v1.15.0 k8s.gcr.io/kube-controller-manager:v1.15.0
-docker tag gcr.azk8s.cn/google_containers/kube-apiserver:v1.15.0 k8s.gcr.io/kube-apiserver:v1.15.0
-docker tag gcr.azk8s.cn/kubernetes-helm/tiller:v2.14.1 gcr.io/kubernetes-helm/tiller:v2.14.1
+docker tag gcr.azk8s.cn/google_containers/kube-proxy:v1.15.3 k8s.gcr.io/kube-proxy:v1.15.3
+docker tag gcr.azk8s.cn/google_containers/kube-scheduler:v1.15.3 k8s.gcr.io/kube-scheduler:v1.15.3
+docker tag gcr.azk8s.cn/google_containers/kube-controller-manager:v1.15.3 k8s.gcr.io/kube-controller-manager:v1.15.3
+docker tag gcr.azk8s.cn/google_containers/kube-apiserver:v1.15.3 k8s.gcr.io/kube-apiserver:v1.15.3
+docker tag gcr.azk8s.cn/kubernetes-helm/tiller:v2.14.3 gcr.io/kubernetes-helm/tiller:v2.14.3
 docker tag gcr.azk8s.cn/google_containers/kubernetes-dashboard-amd64:v1.10.1 k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1
-docker tag gcr.azk8s.cn/google_containers/metrics-server-amd64:v0.3.1 gcr.io/google_containers/metrics-server-amd64:v0.3.1
 EOF
 
 $ bash -x azk8s.sh 
@@ -253,13 +260,14 @@ $ systemctl enable kubelet.service
 
 ```bash
 $ kubeadm init \
-  --kubernetes-version=v1.15.0 \
+  --kubernetes-version=v1.15.3 \
   --pod-network-cidr=10.244.0.0/16 \
   --apiserver-advertise-address=192.168.18.10 \
   --ignore-preflight-errors=Swap
 
-  
-不加--ignore-preflight-errors=Swap，kubeadm会报错
+ 坑1: --pod-network-cidr=10.244.0.0/16,更换为其他子网比如192.168.0.0/16会在日志里疯狂报错,从节点的cni无法启动,flannel无法启动,一直处理NotReady状态
+ 坑2: master和node节点的存储不能超过85%,k8s系统默认超过85%会自动Gc,清除镜像.
+不加--ignore-preflight-errors=Swap，kubeadm也会报错
 [init] Using Kubernetes version: v1.14.0
 [preflight] Running pre-flight checks
         [WARNING Swap]: running with swap on is not supported. Please disable swap
@@ -403,9 +411,9 @@ node01和node02的这几个镜像必须有，可以按照前面的脚本来下�
 
 ```
 pause:3.1
-kube-proxy:v1.15.0
+kube-proxy:v1.15.3
 kubernetes-dashboard-amd64:v1.10.1
-metrics-server-amd64:v0.3.1
+metrics-server-amd64:v0.3.4
 ```
 
 从节点运行kubeadm join来加入集群：
@@ -419,9 +427,9 @@ $ kubeadm join 192.168.18.10:6443 --token rlylpe.lwh24h3j33usmi7s     --discover
 ```bash
 $ kubectl get node
 NAME     STATUS   ROLES    AGE     VERSION
-master   Ready    master   48m     v1.15.0
-node01   Ready    <none>   20m     v1.15.0
-node02   Ready    <none>   20m     v1.15.0
+master   Ready    master   48m     v1.15.3
+node01   Ready    <none>   20m     v1.15.3
+node02   Ready    <none>   20m     v1.15.3
 ```
 
 如果需要从集群中移除node02这个Node执行下面的命令：
@@ -456,7 +464,7 @@ kube-proxy-km2s4                        1/1     Running   0          4h7m
 $ kubectl logs -n kube-system kube-proxy-886c8 
 I0627 05:51:01.150550       1 server_others.go:170] Using ipvs Proxier.
 W0627 05:51:01.151040       1 proxier.go:401] IPVS scheduler not specified, use rr by default
-I0627 05:51:01.151312       1 server.go:534] Version: v1.15.0
+I0627 05:51:01.151312       1 server.go:534] Version: v1.15.3
 I0627 05:51:01.169641       1 conntrack.go:52] Setting nf_conntrack_max to 131072
 I0627 05:51:01.170109       1 config.go:187] Starting service config controller
 I0627 05:51:01.170145       1 controller_utils.go:1029] Waiting for caches to sync for service config controller
@@ -534,182 +542,140 @@ $ kubectl create clusterrolebinding tiller-cluster-rule \
 $ kubectl --namespace kube-system patch deploy tiller-deploy \
  -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}' 
 ```
+### 更换helm镜像源
 
+```bash
+helm repo add stable http://mirror.azure.cn/kubernetes/charts
+"stable" has been added to your repositories
+
+# helm repo list
+NAME  	URL                                       
+local 	http://127.0.0.1:8879/charts              
+stable	https://mirror.azure.cn/kubernetes/charts/
+```
+
+### 安装ingress
+
+将master节点做为边缘节点,打上edge
+
+```cgo
+kubectl label node master node-role.kubernetes.io/edge=
+node/master labeled
+
+$ kgn (alias for `kubectl get nodes`)
+NAME          STATUS   ROLES         AGE   VERSION
+master    Ready    edge,master   13h   v1.15.3
+node01   Ready    <none>        13h   v1.15.3
+```
+
+
+
+stable/nginx-ingress的chart的value.yaml如下:
+
+```yaml
+cat > nginx-ingress.yaml << EOF
+controller:
+  replicaCount: 1
+  hostNetwork: true
+  nodeSelector:
+    node-role.kubernetes.io/edge: ''
+  affinity:
+    podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - nginx-ingress
+            - key: component
+              operator: In
+              values:
+              - controller
+          topologyKey: kubernetes.io/hostname
+  tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: PreferNoSchedule
+defaultBackend:
+  nodeSelector:
+    node-role.kubernetes.io/edge: ''
+  tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: PreferNoSchedule
+EOF
+```
+
+部署`nginx-ingress`,镜像已经提前下载完毕
+
+```yaml
+helm install stable/nginx-ingress -n nginx-ingress -f nginx-ingress.yml
+```
+
+验证: 出现`default backend`,说明部署成功.
+
+```bash
+]# curl http://master-ip  #直接访问master的80端口,进行验证
+default backend - 404
+```
 ### 安装dashboard
 
-dashboard.yaml
+实现能直接域名访问dashboard,且带有ssl的相关证书,免费ssl证书生成可以查看[use acme.sh to renew ssl cert](https://wiki.fenghong.tech/ops/acme-ssl-cert.html).
+得到`fenghhong.key` `fenghong.cer`证书之后.
+```bash
+# kubectl -n kube-system create secret tls qx-tls-secret --key ./fenghhong.key --cert ./fenghong.cer
+# kubectl get secrets -n kube-system |grep qx
+qx-tls-secret                                    kubernetes.io/tls                     2      8h
 
 ```
-# Copyright 2017 The Kubernetes Authors.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+dashboard.yaml
 
-# ------------------- Dashboard Secret ------------------- #
-
-apiVersion: v1
-kind: Secret
-metadata:
-  labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard-certs
-  namespace: kube-system
-type: Opaque
-
----
-# ------------------- Dashboard Service Account ------------------- #
-
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
-  namespace: kube-system
-
----
-# ------------------- Dashboard Role & Role Binding ------------------- #
-
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: kubernetes-dashboard-minimal
-  namespace: kube-system
-rules:
-  # Allow Dashboard to create 'kubernetes-dashboard-key-holder' secret.
-- apiGroups: [""]
-  resources: ["secrets"]
-  verbs: ["create"]
-  # Allow Dashboard to create 'kubernetes-dashboard-settings' config map.
-- apiGroups: [""]
-  resources: ["configmaps"]
-  verbs: ["create"]
-  # Allow Dashboard to get, update and delete Dashboard exclusive secrets.
-- apiGroups: [""]
-  resources: ["secrets"]
-  resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs"]
-  verbs: ["get", "update", "delete"]
-  # Allow Dashboard to get and update 'kubernetes-dashboard-settings' config map.
-- apiGroups: [""]
-  resources: ["configmaps"]
-  resourceNames: ["kubernetes-dashboard-settings"]
-  verbs: ["get", "update"]
-  # Allow Dashboard to get metrics from heapster.
-- apiGroups: [""]
-  resources: ["services"]
-  resourceNames: ["heapster"]
-  verbs: ["proxy"]
-- apiGroups: [""]
-  resources: ["services/proxy"]
-  resourceNames: ["heapster", "http:heapster:", "https:heapster:"]
-  verbs: ["get"]
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: kubernetes-dashboard-minimal
-  namespace: kube-system
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: kubernetes-dashboard-minimal
-subjects:
-- kind: ServiceAccount
-  name: kubernetes-dashboard
-  namespace: kube-system
-
----
-# ------------------- Dashboard Deployment ------------------- #
-
-kind: Deployment
-apiVersion: apps/v1
-metadata:
-  labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
-  namespace: kube-system
-spec:
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      k8s-app: kubernetes-dashboard
-  template:
-    metadata:
-      labels:
-        k8s-app: kubernetes-dashboard
-    spec:
-      containers:
-      - name: kubernetes-dashboard
-        image: k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1
-        ports:
-        - containerPort: 8443
-          protocol: TCP
-        args:
-          - --auto-generate-certificates
-          # Uncomment the following line to manually specify Kubernetes API server Host
-          # If not specified, Dashboard will attempt to auto discover the API server and connect
-          # to it. Uncomment only if the default does not work.
-          # - --apiserver-host=http://my-address:port
-        volumeMounts:
-        - name: kubernetes-dashboard-certs
-          mountPath: /certs
-          # Create on-disk volume to store exec logs
-        - mountPath: /tmp
-          name: tmp-volume
-        livenessProbe:
-          httpGet:
-            scheme: HTTPS
-            path: /
-            port: 8443
-          initialDelaySeconds: 30
-          timeoutSeconds: 30
-      volumes:
-      - name: kubernetes-dashboard-certs
-        secret:
-          secretName: kubernetes-dashboard-certs
-      - name: tmp-volume
-        emptyDir: {}
-      serviceAccountName: kubernetes-dashboard
-      # Comment the following tolerations if Dashboard must not be deployed on master
-      tolerations:
-      - key: node-role.kubernetes.io/master
-        effect: NoSchedule
-
----
-# ------------------- Dashboard Service ------------------- #
-
-kind: Service
-apiVersion: v1
-metadata:
-  labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
-  namespace: kube-system
-spec:
-  ports:
-    - port: 443
-      targetPort: 8443
-  selector:
-    k8s-app: kubernetes-dashboard
-
+```yaml
+cat > dashboard.yml << EOF
+image:
+  repository: k8s.gcr.io/kubernetes-dashboard-amd64
+  tag: v1.10.1
+ingress:
+  enabled: true
+  hosts: 
+    - k8s.fenghong.tech
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+  tls:
+    - secretName: qx-tls-secret  #填写生成的secrets
+      hosts:
+      - k8s.fenghong.tech
+nodeSelector:
+    node-role.kubernetes.io/edge: ''
+tolerations:
+    - key: node-role.kubernetes.io/master
+      operator: Exists
+      effect: NoSchedule
+    - key: node-role.kubernetes.io/master
+      operator: Exists
+      effect: PreferNoSchedule
+rbac:
+  clusterAdminRole: true
+EOF
 ```
 
 部署到dashboard
 
 ```
-$ kubectl apply -f dashboard.yaml
+$ helm install stable/kubernetes-dashboard \
+-n kubernetes-dashboard \
+--namespace kube-system \
+-f dashboard.yaml
 ```
+
 
 查看授权token:
 
@@ -729,8 +695,50 @@ token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2V
 ca.crt:     1025 bytes
 namespace:  13 bytes
 ```
+验证:
 
-如果没有利用ingress，客户端访问`p12`证书生成：
+```yaml
+# 访问 https://k8s.fenghong.tech 即可,填写上面的token
+```
+
+
+
+### 安装metrics-server
+metrics-server的helm的chart管理yml文件
+```yaml
+args:
+- --logtostderr
+- --kubelet-insecure-tls
+- --kubelet-preferred-address-types=InternalIP
+nodeSelector:
+    node-role.kubernetes.io/edge: ''
+tolerations:
+    - key: node-role.kubernetes.io/master
+      operator: Exists
+      effect: NoSchedule
+    - key: node-role.kubernetes.io/master
+      operator: Exists
+      effect: PreferNoSchedule
+```
+部署:
+
+```bash
+$ helm install stable/metrics-server \
+ -n metrics-server \
+ --namespace kube-system \
+ -f metrics-server.yml
+```
+
+验证:
+```bash
+]# kubectl top node
+NAME          CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+master    127m         1%     3496Mi          14%       
+node01   72m          0%     14468Mi         60%
+
+```
+
+~~如果没有利用ingress，客户端访问`p12`证书生成~~：
 
 ```bash
 $ cd ~/.kube
@@ -739,9 +747,9 @@ $ grep 'client-key-data' config  |head -n 1 |awk '{print $2}' |base64 -d >> kube
 $ openssl pkcs12 -export -clcerts -inkey kubecfg.key -in kubecfg.crt -out kubecfg.p12 -name "kubernetes-web-client"
 ```
 
-访问`https://192.168.18.11:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy`
+~~访问 https://192.168.18.11:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy~~
 
-#### 客户端选择证书的原理
+#### ~~客户端选择证书的原理~~
 
 1. 证书选择是在客户端和服务端 SSL/TLS 握手协商阶段商定的；
 2. 服务端如果要求客户端提供证书，则在握手时会向客户端发送一个它接受的 CA 列表；
@@ -749,4 +757,6 @@ $ openssl pkcs12 -export -clcerts -inkey kubecfg.key -in kubecfg.crt -out kubecf
 4. 用户选择一个证书私钥，然后客户端将使用它和服务端通信；
 
 
+### 参考
 
+- [TLS Secret证书管理](https://blog.frognew.com/2018/09/using-helm-manage-tls-secret.html)

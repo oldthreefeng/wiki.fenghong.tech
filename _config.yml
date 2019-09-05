@@ -1,12 +1,12 @@
 # Document:
 # http://simiki.org/docs/configuration.html
 
-url: "http://wiki.fenghong.tech"
+url: "https://wiki.fenghong.tech"
 title: "Wiki · Louis"
 keywords: 
 description: 
 author: "Louis"
-theme: yasimple
+theme: yasimple_x2
 
 #markdown Parser#
 markdown:

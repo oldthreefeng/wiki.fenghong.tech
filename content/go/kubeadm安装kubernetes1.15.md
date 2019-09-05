@@ -523,6 +523,18 @@ Server: &version.Version{SemVer:"v2.14.1", GitCommit:"5270352a09c7e8b6e8c9593002
 
 ```
 
+创建了`tiller`的 ServceAccount 后还没完，因为我们的 Tiller 之前已经就部署成功了，而且是没有指定 `ServiceAccount` 的，所以我们需要给 Tiller 打上一个` ServiceAccount `的补丁,如果不打补丁,会导致后面的forbidden报错：
+
+```
+$ kubectl --namespace kube-system create serviceaccount tiller
+
+$ kubectl create clusterrolebinding tiller-cluster-rule \
+ --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+
+$ kubectl --namespace kube-system patch deploy tiller-deploy \
+ -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}' 
+```
+
 ### 安装dashboard
 
 dashboard.yaml

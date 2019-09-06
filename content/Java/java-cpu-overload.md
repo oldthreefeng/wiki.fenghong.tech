@@ -25,7 +25,7 @@ jstack pid >> java.txt
 $ top -H -p PID
 
 ## 4. 将线程的PID转换为16进制,大写转换为小写。
-$ pidhex=`"obase=16; PID" | bc | tr "[:upper:]" "[:lower:]"`
+$ pidhex=`echo "obase=16; PID" | bc | tr "[:upper:]" "[:lower:]"`
 
 ## 5. 在第二步导出的java.txt中查找转换成为16进制的线程PID。找到对应的线程栈
 $ grep $pidhex -A 30 java.txt

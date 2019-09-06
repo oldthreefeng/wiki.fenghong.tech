@@ -422,6 +422,12 @@ metrics-server-amd64:v0.3.4
 $ kubeadm join 192.168.18.10:6443 --token rlylpe.lwh24h3j33usmi7s     --discovery-token-ca-cert-hash sha256:3209293d8057e442d18f9586d4e2e92e759a33b2b918f09916dd674357c74a6c --ignore-preflight-errors=Swap
 ```
 
+如果忘记了这个命令，或者是新加入的节点该怎么办？在master节点执行这个命令即可:
+
+```bash
+$ kubeadm token create --print-join-command
+```
+
 运行命令后，在master上查看集群节点状态：
 
 ```bash
@@ -632,7 +638,7 @@ default backend - 404
 ```bash
 # kubectl -n kube-system create secret tls qx-tls-secret --key ./fenghhong.key --cert ./fenghong.cer
 # kubectl get secrets -n kube-system |grep qx
-qx-tls-secret                                    kubernetes.io/tls                     2      8h
+qx-tls-secret  kubernetes.io/tls      2    8h
 
 ```
 dashboard.yaml

@@ -5,8 +5,8 @@ tag:
   - sql
   - ubuntu
 ---
-[toc]
 
+[TOC]
 
 ### 配置OS资源限制
 

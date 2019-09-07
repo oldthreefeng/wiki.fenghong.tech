@@ -39,12 +39,12 @@ wget http://get.enterprisedb.com/postgresql/postgresql-9.4.24-1-linux-x64-binari
 tar xf postgresql-9.4.24-1-linux-x64-binaries.tar.gz -C /data/
 ```
 
-### 配置环境变量
+- 配置环境变量
 
 ```yaml
 export PG_INSTALL_DIR="/data/pgsql"
 export PG_DATA_DIR="/data/pgdata"
-export PATH=$PGROOT/bin:$PATH
+export PATH=$PG_INSTALL_DIR/bin:$PATH
 ```
 
 ### 配置启动脚本

@@ -2,8 +2,10 @@
 title: "kubeadm 安装 kubernetes1.15.3"
 date: 2019-08-29 15:56
 tag: 
-  - go
+  - docker
+  - nginx-ingress
   - kubernetes1.15.3
+  - dashboard
 ---
 
 [TOC]

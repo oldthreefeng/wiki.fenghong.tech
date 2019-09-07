@@ -2,8 +2,9 @@
 title: "kuberbetes 网络排错"
 date: 2019-09-06 15:56
 tag: 
-- go
-- kubernetes1.15.3
+  - network
+  - kubernetes1.15.3
+  - flannel
 ---
 
 [TOC]

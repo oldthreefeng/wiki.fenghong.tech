@@ -1,7 +1,9 @@
 ---
 title: "Go 开发工具安装"
 date: 2018-12-09 15:56
-tag: go
+tag: 
+  - go
+  - goland
 collection: "the way to go"
 ---
 

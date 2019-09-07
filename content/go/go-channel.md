@@ -1,7 +1,9 @@
 ---
 title: "Go channel 理解"
 date: 2019-08-09 15:56
-tag: go
+tag: 
+  - go
+  - channel
 collection: "go channel"
 ---
 

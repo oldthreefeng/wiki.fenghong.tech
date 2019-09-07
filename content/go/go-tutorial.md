@@ -1,7 +1,9 @@
 ---
 title: "Go入门笔记"
 date: 2018-11-09 15:56
-tag: go
+tag: 
+  - go
+  - resources
 ---
 
 [TOC]

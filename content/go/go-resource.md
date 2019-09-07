@@ -1,7 +1,9 @@
 ---
 title: "Go 资源汇总"
 date: 2018-11-09 15:56
-tag: go
+tag: 
+  - go
+  - resources
 ---
 
 [TOC]

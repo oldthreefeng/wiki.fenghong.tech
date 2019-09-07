@@ -1,9 +1,10 @@
 ---
-title: "go paxos"
+title: "go Paxos"
 date: 2019-08-28 18:10
 tag: 
   - go
-  - paxos
+  - Paxos
+  - algorithm
 ---
 
 [TOC]

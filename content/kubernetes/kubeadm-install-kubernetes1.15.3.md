@@ -217,13 +217,14 @@ docker tag gcr.azk8s.cn/google_containers/kube-controller-manager:v1.15.3 k8s.gc
 docker tag gcr.azk8s.cn/google_containers/kube-apiserver:v1.15.3 k8s.gcr.io/kube-apiserver:v1.15.3
 docker tag gcr.azk8s.cn/kubernetes-helm/tiller:v2.14.3 gcr.io/kubernetes-helm/tiller:v2.14.3
 docker tag gcr.azk8s.cn/google_containers/kubernetes-dashboard-amd64:v1.10.1 k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1
+## delete azk8s related images
+docker rmi $(docker images |grep azk8s | grep -v REPOSITORY | awk 'BEGIN{OFS=":";ORS=" "}{print $1,$2}')
 EOF
+
 
 $ bash -x azk8s.sh 
 ### 据说kubeadm  --image-repository 可以直接更改镜像仓库，这样就不用担心被墙了。可以试一下
 ```
-
-
 
 ## 使用kubeadm部署Kubernetes
 

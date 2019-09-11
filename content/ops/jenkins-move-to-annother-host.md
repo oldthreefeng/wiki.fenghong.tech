@@ -1,5 +1,5 @@
 ---
-title: "Gogs仓库迁移"
+title: "jenkins自动化发布工具迁移"
 date: 2019-09-09 15:56
 tag: 
   - git
@@ -79,6 +79,9 @@ $ mv jenkins/workspace data/
 ```
 ## 调式的时候去掉-d,便于观察日志是否有报错信息,根据报错信息依次解决.
 $ docker-compose up -d
+
+## 如果去权限错误,记得chown 修改为docker的启动用户权限;实在不777大法
+$ chmod -R 777 data/
 ```
 
 - 创建ssh密钥，可以远程部署,这个主要是原来的ssh秘钥密码忘记了,所以重新弄了~~

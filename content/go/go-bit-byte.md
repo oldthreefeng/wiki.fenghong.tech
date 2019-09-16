@@ -112,7 +112,7 @@ func IsPowerOfTwo(n int) bool {
     n-1为 	   	  2^7-1 == 0111 1111
     n & (n-1)为,	        == 0000 0000 
     */
-    return !(n & (n-1))
+    return (n & (n-1)) == 0
 }
 ```
 

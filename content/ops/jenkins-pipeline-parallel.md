@@ -178,7 +178,7 @@ pipeline {
                     imageUrl= "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png"
                     msg ="发布成功，干得不错！"
                 }
-                dingTalk accessToken:"c580eda8baa9e1df638c20043f1009b25dd12a9554590a662571bd7ed2f14f07",message:"${msg}",imageUrl:"${imageUrl}",jenkinsUrl:"${BUILD_URL}",notifyPeople: ''
+                dingTalk accessToken:"***********",message:"${msg}",imageUrl:"${imageUrl}",jenkinsUrl:"${BUILD_URL}",notifyPeople: ''
             }
         }
     }

@@ -3,7 +3,7 @@ title: "go房贷计算器"
 date: 2019-09-24 17:40
 tag:
   - 房贷
-  - go
+  - algorithm
 ---
 
 [TOC]

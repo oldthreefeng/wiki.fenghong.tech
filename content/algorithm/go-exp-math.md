@@ -2,7 +2,6 @@
 title: "Go 运算表达式求值"
 date: 2019-09-13 11:40
 tag: 
-  - go
   - stack
   - algorithm
   - exp

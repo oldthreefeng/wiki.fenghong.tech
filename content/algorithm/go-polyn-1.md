@@ -2,7 +2,6 @@
 title: "Go 多项式实现(1)"
 date: 2019-09-04 15:56
 tag: 
-  - go
   - markdown
   - polynomial
   - algorithm

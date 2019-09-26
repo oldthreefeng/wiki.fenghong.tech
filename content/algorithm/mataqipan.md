@@ -209,7 +209,7 @@ func outWeight() {
 // 回退操作, 不能重复探测,去重操作.
 func main() {
 	InitWeight()
-	outWeight()
+	//outWeight()
 	fmt.Scanln(&cur.x,&cur.y)
 	backup := 0
 	Step := 1
@@ -312,14 +312,6 @@ func (stack *Stack) IsEmpty() bool  {
 
 ```bash
 $ go run main.go
-[ 2  3  4  4  4  4  3  2]
-[ 3  4  6  6  6  6  4  3]
-[ 4  6  8  8  8  8  6  4]
-[ 4  6  8  8  8  8  6  4]
-[ 4  6  8  8  8  8  6  4]
-[ 4  6  8  8  8  8  6  4]
-[ 3  4  6  6  6  6  4  3]
-[ 2  3  4  4  4  4  3  2]
 2 4  
 [25 12 27 38 23  2 59 52]
 [28 39 24 13 58 51 22  3]

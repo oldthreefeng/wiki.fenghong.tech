@@ -28,7 +28,7 @@ direction = [2][9]int{{0, -2, -1, 1, 2, 2, 1, -1, -2},
 		{0, 1, 2, 2, 1, -1, -2, -2, -1}} // 马可以走的8个方向
 		探测下一步需要走,可以用下面公式
 		x = x+direction[0][i]
-		x = x+direction[1][i]
+		y = y+direction[1][i]
 ```
 
 每一个马都有八个下一步的选择，我们在满足要求的点中任意找一个进行遍历，当八个点都不满足要求时，就回溯的上一步，找其他点进行遍历。
@@ -124,7 +124,7 @@ func Feasible(x, y int) bool {
 }
 
 
-//NextDirection 每次走下一步,选择下一步最少的权值,进行贪心算法
+//NextDirection 每次走下一步,选择下一步最少的权值,进行贪心算法,返回下一步的方向
 func NextDirection(c Spot) int {
 	var MinDirection, Min int
 	var x, y int
@@ -216,11 +216,12 @@ func main() {
 	SetWeight(cur.x, cur.y)
 	chess[cur.x][cur.y] = Step
 	for Step < 64 {
+        //获取下一步访问方向,根据贪心策略,会选择这一步的weight值最少的那个方向
 		k := NextDirection(cur)
 		if k != 0 {
+            //这一步可以走,将这一步记录下来
 			next.x = cur.x + direction[0][k]
 			next.y = cur.y + direction[1][k]
-
 			cur.d[k] = 1
 			s.Push(cur)
 			cur = next
@@ -229,6 +230,7 @@ func main() {
 			SetWeight(cur.x, cur.y)
 			//回退
 		} else {
+            //这步不可以走,得回退到上一步
 			chess[cur.x][cur.y] = 0
 			backup++//回退次数
 			Step--
@@ -240,6 +242,70 @@ func main() {
 	fmt.Print(backup)
 }
 
+```
+
+### 依赖的stack
+
+```go
+/*
+@Time : 2019/9/23 23:29
+@Author : louis
+@File : stack
+@Software: GoLand
+*/
+
+package stack
+
+type Item struct {
+	item interface{}
+	next *Item
+}
+
+// Stack is a base structure for LIFO
+type Stack struct {
+	sp    *Item
+	depth uint64
+}
+
+// Initialzes new Stack
+func New() *Stack {
+	var stack = new(Stack)
+
+	stack.depth = 0
+	return stack
+}
+
+// Pushes a given item into Stack
+func (stack *Stack) Push(item interface{}) {
+	stack.sp = &Item{item: item, next: stack.sp}
+	stack.depth++
+}
+
+// Deletes top of a stack and return it
+func (stack *Stack) Pop() interface{} {
+	if stack.depth > 0 {
+		item := stack.sp.item
+		stack.sp = stack.sp.next
+		stack.depth--
+		return item
+	}
+
+	return nil
+}
+
+// Peek returns top of a stack without deletion
+func (stack *Stack) Peek() interface{} {
+	if stack.depth > 0 {
+		return stack.sp.item
+	}
+
+	return nil
+}
+
+//IsEmpty returns true means Empty Stack
+func (stack *Stack) IsEmpty() bool  {
+	return stack.depth == 0
+}
 ```
 
 验证
@@ -266,7 +332,7 @@ $ go run main.go
 0
 ```
 
-
+感谢您的阅读~
 
 ## 参考
 

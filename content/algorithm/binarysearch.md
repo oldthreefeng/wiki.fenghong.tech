@@ -2,8 +2,7 @@
 title: "go-binarySearch"
 date: 2019-09-26 22:40
 tag:
-  - binary
-  - algorithm
+  - binarySearch
 ---
 
 [TOC]

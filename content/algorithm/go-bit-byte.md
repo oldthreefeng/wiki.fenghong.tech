@@ -3,7 +3,7 @@ title: "Go 位运算详解"
 date: 2019-09-17 00:40
 tag: 
   - bit
-  - algorithm
+  - leetcode
 ---
 
 [TOC]
@@ -97,7 +97,7 @@ func FlipBit(c byte, i uint) byte {
 }
 ```
 
-### 判断为2的幂
+### 231. 判断为2的幂
 
 - 位运算
 
@@ -109,7 +109,7 @@ func IsPowerOfTwo(n int) bool {
     /*
     n位2的幂时, 	2^7   == 1000 0000
     n-1为 	   	  2^7-1 == 0111 1111
-    n & (n-1)为,	        == 0000 0000 
+    n & (n-1)必定全为,	  == 0000 0000 
     */
     return (n & (n-1)) == 0
 }
@@ -134,7 +134,7 @@ func IsPowerOfTwo(n int) bool {
 }
 ```
 
-### 验证
+#### 验证
 
 ```go
 package main
@@ -186,7 +186,319 @@ a的第2位为:1
 16 	isPowerOfTwo
 ```
 
-### 参考
+### 5213. Play with chips
+
+#### 描述
+
+数轴上放置了一些筹码，每个筹码的位置存在数组 chips 当中。
+
+你可以对 任何筹码 执行下面两种操作之一（不限操作次数，0 次也可以）：
+
+- 将第 i 个筹码向左或者右移动 2 个单位，代价为 0。
+- 将第 i 个筹码向左或者右移动 1 个单位，代价为 1。
+
+最开始的时候，同一位置上也可能放着两个或者更多的筹码。
+
+返回将所有筹码移动到同一位置（任意位置）上所需要的最小代价。
+
+示例 1：
+
+```
+输入：chips = [1,2,3]
+输出：1
+解释：第二个筹码移动到位置三的代价是 1，第一个筹码移动到位置三的代价是 0，总代价为 1。
+```
+示例 2：
+
+```
+输入：chips = [2,2,2,3,3]
+输出：2
+解释：第四和第五个筹码移动到位置二的代价都是 1，所以最小总代价为 2。
+```
+
+提示：
+
+```
+1 <= chips.length <= 100
+1 <= chips[i] <= 10^9
+```
+
+#### 解决代码
+
+```
+func MinCostToMoveChips(chips []int) int {
+	odd, even := 0,0
+	lc := len(chips)
+	for i:=0;i<lc;i++ {
+		if chips[i] & 0x01 == 0 { //偶数
+			even++
+		} else {
+			odd++
+		}
+	}
+	return min(odd, even)
+}
+
+func min(nums ...int) int {
+	m := nums[0]
+	for i := 1; i < len(nums); i++ {
+		if m > nums[i] {
+			m = nums[i]
+		}
+	}
+	return m
+}
+```
+
+#### 测试
+
+```
+import "testing"
+
+func TestMinCostToMoveChips(t *testing.T) {
+	type args struct {
+		chips []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{"test01",args{[]int{1,2,3}},1},
+		{"test02",args{[]int{2,2,2,3,3}},2},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := MinCostToMoveChips(tt.args.chips); got != tt.want {
+				t.Errorf("MinCostToMoveChips() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+```
+
+### 476. 数字的补数
+
+给定一个正整数，输出它的补数。补数是对该数的二进制表示取反。
+
+注意:
+
+给定的整数保证在32位带符号整数的范围内。
+你可以假定二进制数不包含前导零位。
+示例 1:
+
+```
+输入: 5
+输出: 2
+解释: 5的二进制表示为101（没有前导零位），其补数为010。所以你需要输出2。
+```
+示例 2:
+
+```
+输入: 1
+输出: 0
+解释: 1的二进制表示为1（没有前导零位），其补数为0。所以你需要输出0。
+```
+
+#### 解决
+
+```
+
+package leetcode
+
+// 将num的每一位进行异或,再进行组合,形成新的数.
+
+func FindComplement(num int) int {
+	var c, tmp int
+	var i uint
+	for num != 0 {
+		tmp = (num & 0x01) ^ 0x01//取num当前位的异或
+		c += tmp<<i  //将num当前位左移i位后
+		num >>= 1
+		i++
+	}
+	return c
+}
+```
+
+#### 测试用例
+
+```
+/*
+Copyright 2019 louis.
+@Time : 2019/10/7 23:51
+@Author : louis
+@File : 476-numbercomplement
+@Software: GoLand
+
+*/
+
+package leetcode
+
+import "testing"
+
+func TestFindComplement(t *testing.T) {
+	type args struct {
+		num int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{"test01",args{5},2},
+		{"test02",args{1},0},
+		{"test03",args{12},3},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := FindComplement(tt.args.num); got != tt.want {
+				t.Errorf("FindComplement() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+```
+
+### 318. 最大单词长度乘积
+
+给定一个字符串数组 `words`，找到 `length(word[i]) * length(word[j])` 的最大值，并且这两个单词不含有公共字母。你可以认为每个单词只包含小写字母。如果不存在这样的两个单词，返回 0。
+
+```
+示例 1:
+
+输入: ["abcw","baz","foo","bar","xtfn","abcdef"]
+输出: 16 
+解释: 这两个单词为 "abcw", "xtfn"。
+示例 2:
+
+输入: ["a","ab","abc","d","cd","bcd","abcd"]
+输出: 4 
+解释: 这两个单词为 "ab", "cd"。
+示例 3:
+
+输入: ["a","aa","aaa","aaaa"]
+输出: 0 
+解释: 不存在这样的两个单词。
+```
+####  解决
+
+```
+/*
+Copyright 2019 louis.
+@Time : 2019/10/8 0:33
+@Author : louis
+@File : 318-maxproduct
+@Software: GoLand
+
+*/
+
+/*
+思路:
+用二进制的一位表示某一个字母是否出现过，0表示没出现，1表示出现。
+"abcd"二进制表示00000000 00000000 00000000 00001111,
+"bc"二进制表示00000000 00000000 00000000 00000110。
+当两个字符串没有相同的字母时，二进制数与的结果为0。
+*/
+
+package leetcode
+
+func String2int(str string) (res int) {
+	for i := 0; i < len(str); i++ {  //不能用for-range迭代.
+		res |= 1 << uint(str[i]-'a')   // "abc" ==> 二进制"111"
+	}
+	return res
+}
+
+func MaxProduct(words []string) int {
+	var arr []int = make([]int, len(words))
+	l := len(words)
+	for i := 0; i < l; i++ {
+		arr[i] = String2int(words[i])  //将[]string数组里面的string,转化为int.
+	}
+	var res int
+	for i := 0; i < l; i++ {
+		for j := i + 1; j < l; j++ {
+			// 遍历数组,如果数组里面&操作为0,即这两个单词不含有公共字母
+			// 并且res < length(word[i]) * length(word[j])时,更新res.
+			if arr[i]&arr[j] == 0 && len(words[i])*len(words[j]) > res {
+				res = len(words[i]) * len(words[j])
+			}
+		}
+	}
+	return res
+}
+
+```
+
+#### 测试用例
+
+```
+/*
+Copyright 2019 louis.
+@Time : 2019/10/8 0:33
+@Author : louis
+@File : 318-maxproduct
+@Software: GoLand
+
+*/
+
+package leetcode
+
+import (
+	"testing"
+)
+
+func TestMaxProduct(t *testing.T) {
+	type args struct {
+		words []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{"test01", args{[]string{"a", "ab", "abc", "d", "cd", "bcd", "abcd"}}, 4},
+		{"test02", args{[]string{"abcw","baz","foo","bar","xtfn","abcdef"}}, 16},
+		{"test03", args{[]string{"a","aa","aaa","aaaa"}}, 0},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := MaxProduct(tt.args.words); got != tt.want {
+				t.Errorf("MaxProduct() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestString2int(t *testing.T) {
+	type args struct {
+		str string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantRes int
+	}{
+	//"abcd"二进制表示00000000 00000000 00000000 00001111,
+	//"bc"二进制表示00000000 00000000 00000000 00000110。
+		{"test01",args{"abcd"},0x0f},  
+		{"test02",args{"bc"},0x06},  
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotRes := String2int(tt.args.str); gotRes != tt.wantRes {
+				t.Errorf("String2int() = %v, want %v", gotRes, tt.wantRes)
+			}
+		})
+	}
+}
+
+```
+
+## 参考
 
 - [位运算](https://studygolang.com/articles/14276)
 

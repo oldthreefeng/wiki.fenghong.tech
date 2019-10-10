@@ -35,6 +35,18 @@ tag:
 
 任何数`&`非0为该数: `x & ^0 = x`;
 
+逻辑操作与加减法结合起来的恒等式: 
+
+`-x = ^x + 1 `
+
+`-x = ^(x-1)`
+
+`^x = -x -1`
+
+`-^x = x +1`
+
+...
+
 ## 示例
 
 ### 136. singleNumber1
@@ -221,6 +233,18 @@ ok      gogs.wangke.co/go/algo/leetcode 3.508s
 位运算，异或运算。对于一个数组`nums = [1, 1 , 2, 2, 3, 4, 4, 5]`。
 其一，如果，进行一次全部异或运算，将会得到`3 ^ 5`。
 其二， `3 ^ 5 = 110b`。那么在出现`1`的位置，必然一个为`1`一个为`0`，这样就可以根据特征区分出两个数字。
+
+[Hacker's Delight 2nd Edition Chinese](https://raw.githubusercontent.com/jyfc/ebook/master/02_algorithm/算法心得：高效算法的奥秘（中文第2版）.pdf)
+
+
+>Use the following formula to isolate the rightmost 1-bit, producing 0 if none (eg, 01011000 ==> 0000 1000): 
+>				`x & (-x)`
+>
+>翻译过来: 下列公式可以保留x中最靠右且值为1的位元,并将其余位元置0;若不存在,则生成的数为0.(01011000 ==> 0000 1000):
+>
+>​			`x & (-x)`
+
+
 其三，于是将问题转化为了“一个数字出现1次，其他数字出现两次”。
 
 #### 代码
@@ -233,7 +257,8 @@ func SingleNumber3(nums []int) []int {
 		diff ^= v
 	}
 	//  3(011),5(101) 两个不一样，  diff = 110
-	diff &= ^diff +1 //==> 找到只出现一次的两个数最右侧不相同的位
+	// diff &= ^diff +1 //==> 找到只出现一次的两个数最右侧不相同的位
+	diff &= -diff
 	// diff = 10
 	for _, v := range nums {
 		if v&diff == 0 {

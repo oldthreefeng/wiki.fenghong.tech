@@ -226,6 +226,9 @@ a的第2位为:1
 #### 解决代码
 
 ```
+// 思路:
+// 偶数/奇数移动无需代价,只需要判断偶数和奇数的个数,取小的个数即可
+// 奇数少,可以移动奇数的个数,即花费代价.
 func MinCostToMoveChips(chips []int) int {
 	odd, even := 0,0
 	lc := len(chips)

@@ -11,7 +11,7 @@ tag: ops
 
 ## 上图
 
-![img](https://pic.fenghong.tech/ops-new-fish.png)
+![img](http://pic.fenghong.tech/ops-new-fish.png)
 
 ## 参考
 
